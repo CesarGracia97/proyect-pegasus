@@ -1,0 +1,73 @@
+/* Pantalla de fondo estilo Arcade a pantalla completa */
+.capcom-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999; /* Máxima prioridad visual por encima de toda la app */
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Estado que gatilla el desvanecimiento de salida hacia el portafolio */
+.capcom-container.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.logo-wrapper {
+  width: 85%;
+  max-width: 900px;
+}
+
+.capcom-svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Control maestro de la animación secuencial de trazo, color y destello */
+.logo-path {
+  fill-opacity: 0;
+  stroke: #de8d00; /* Pincel dorado brillante para trazar las líneas inicialmente */
+  stroke-width: 3px;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transform-origin: center;
+  
+  
+  animation: 
+    drawOutline 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards, // - Fase 1: Dibujar líneas 
+    fillColor 0.4s ease 1.5s forwards, //- Fase 2: Llenar color (duración 0.6s, empieza a los 2.8s)
+    capcomGlow 0.4s ease-in-out 1.9s; //- Fase 3: Destello/Glow (duración 0.8s, empieza a los 3.4s)
+}
+
+/* Fase 1: Simular el trazo con pincel */
+@keyframes drawOutline {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Fase 2: Revelar los colores sólidos correspondientes y ocultar el borde de trazo */
+@keyframes fillColor {
+  to {
+    fill-opacity: 1;
+    stroke: transparent;
+  }
+}
+
+/* Fase 3: El destello/resplandor clásico retro con escalado sutil */
+@keyframes capcomGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 0px rgba(222, 141, 0, 0));
+  }
+  50% {
+    filter: drop-shadow(0 0 30px rgba(222, 141, 0, 1)) brightness(1.4);
+    transform: scale(1.03);
+  }
+}

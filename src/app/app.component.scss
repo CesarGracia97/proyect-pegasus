@@ -1,0 +1,60 @@
+/* src/app/app.component.scss */
+
+/* Contenedor principal de tu portafolio */
+.portfolio-layout {
+  min-height: 100vh;
+  background-color: #121212; /* Un fondo oscuro elegante para tu espacio */
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 2rem;
+}
+
+.portfolio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #333;
+  padding-bottom: 1rem;
+
+  h1 {
+    color: #de8d00; /* Reutilizando el color dorado de la intro */
+    margin: 0;
+  }
+
+  ul {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    a {
+      color: #aaa;
+      text-decoration: none;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+}
+
+.hero-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 60vh;
+
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: #888;
+    font-size: 1.2rem;
+  }
+}
