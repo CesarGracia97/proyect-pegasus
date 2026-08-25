@@ -35,4 +35,4 @@ jobs:
           context: ./proyect-pegasus
           file: ./proyect-pegasus/Dockerfile
           push: true
-          tags: cesargracia97/ps-audvid-frontend:v1
+          tags: cesargracia97/pegasus-frontend:v1
