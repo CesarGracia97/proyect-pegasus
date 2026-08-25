@@ -6,7 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AudioConverterService {
-  private apiUrl = 'http://localhost:3000/audio/convert-to-mp3';
+  private baseUrl = `http://${window.location.hostname}:3000`;
+  private apiUrl = `${this.baseUrl}/audio/convert-to-mp3`;
 
   constructor(private http: HttpClient) {}
 
