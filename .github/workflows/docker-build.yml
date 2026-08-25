@@ -12,27 +12,32 @@ jobs:
       - name: Descargar código
         uses: actions/checkout@v4
 
+      - name: Configurar QEMU (Soporte ARM64 para teléfonos)
+        uses: docker/setup-qemu-action@v3
+
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Autenticar en Docker Hub
         uses: docker/login-action@v3
         with:
           username: cesargracia97
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Configurar Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Compilar y publicar Backend
+      - name: Compilar y publicar Backend (Multi-arch)
         uses: docker/build-push-action@v5
         with:
           context: ./audio-video
           file: ./audio-video/Dockerfile
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: cesargracia97/ps-audvid-backend:v1
 
-      - name: Compilar y publicar Frontend
+      - name: Compilar y publicar Frontend (Multi-arch)
         uses: docker/build-push-action@v5
         with:
           context: ./proyect-pegasus
           file: ./proyect-pegasus/Dockerfile
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: cesargracia97/pegasus-frontend:v1
