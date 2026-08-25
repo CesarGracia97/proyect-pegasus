@@ -24,15 +24,15 @@ jobs:
       - name: Compilar y publicar Backend
         uses: docker/build-push-action@v5
         with:
-          context: ./backend
-          file: ./backend/Dockerfile
+          context: ./audio-video
+          file: ./audio-video/Dockerfile
           push: true
           tags: cesargracia97/ps-audvid-backend:v1
 
       - name: Compilar y publicar Frontend
         uses: docker/build-push-action@v5
         with:
-          context: ./frontend
-          file: ./frontend/Dockerfile
+          context: ./proyect-pegasus
+          file: ./proyect-pegasus/Dockerfile
           push: true
           tags: cesargracia97/ps-audvid-frontend:v1
