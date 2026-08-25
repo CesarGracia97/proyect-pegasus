@@ -1,0 +1,60 @@
+.tools-container {
+  min-height: 100vh;
+  background-color: #111;
+  color: #fff;
+  padding: 3rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tools-header {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #7a7a7a;
+    font-size: 1.1rem;
+  }
+}
+
+.tools-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.tab-btn {
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  color: #aaa;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: #ffab00;
+    color: #fff;
+  }
+
+  &.active {
+    background-color: #ffab00;
+    color: #000;
+    border-color: #ffab00;
+  }
+}
+
+.tool-view {
+  width: 100%;
+  max-width: 680px;
+}

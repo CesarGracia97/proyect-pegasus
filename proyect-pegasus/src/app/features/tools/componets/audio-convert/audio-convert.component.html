@@ -1,0 +1,123 @@
+<div class="converter-card">
+  <div class="card-header">
+    <svg class="icon-audio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M9 18V5l12-2v13a1 1 0 0 1-1 1H9z"></path>
+      <circle cx="6" cy="18" r="3"></circle>
+      <circle cx="18" cy="16" r="3"></circle>
+    </svg>
+    <h2>Convertidor de Audio a MP3</h2>
+  </div>
+
+  <div class="format-selector-group">
+    <label for="formatSelect" class="selector-label">Selecciona el formato de origen:</label>
+    <div class="select-wrapper">
+      <select
+        id="formatSelect"
+        class="format-select"
+        [(ngModel)]="selectedFormat"
+        (change)="onFormatChange()"
+        [disabled]="isLoading"
+      >
+        <option value="" disabled selected>--- Selecciona un formato ---</option>
+        @for (fmt of formats; track fmt.extension) {
+          <option [value]="fmt.extension">{{ fmt.label }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <div
+    class="dropzone"
+    [class.disabled]="isLoading || !selectedFormat"
+    (dragover)="onDragOver($event)"
+    (drop)="onDrop($event)"
+    (click)="triggerFileInput(fileInput)"
+  >
+    <input
+      #fileInput
+      type="file"
+      multiple
+      [accept]="currentAccept"
+      [disabled]="!selectedFormat || isLoading"
+      (change)="onFileSelected($event)"
+      class="hidden-input"
+    />
+
+    <div class="dropzone-content">
+      <div class="upload-icon-wrapper">
+        <svg class="icon-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17 8 12 3 7 8"></polyline>
+          <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
+      </div>
+
+      @if (!selectedFormat) {
+        <p class="dropzone-text lock-text">🔒 Primero selecciona un formato de origen para habilitar la carga</p>
+      } @else {
+        <p class="dropzone-text">Haga clic o arrastre sus archivos de audio aquí</p>
+        <p class="dropzone-subtext">
+          Máximo <strong>10 archivos</strong> con extensión <strong>{{ selectedFormat.toUpperCase() }}</strong>
+        </p>
+      }
+    </div>
+  </div>
+
+  @if (errorMessage) {
+    <div class="alert alert-error">
+      <span>⚠️ {{ errorMessage }}</span>
+    </div>
+  }
+
+  @if (successMessage) {
+    <div class="alert alert-success">
+      <span>✅ ¡Proceso completado! La descarga del archivo ZIP inició automáticamente.</span>
+    </div>
+  }
+
+  @if (selectedFiles.length > 0) {
+    <div class="file-list-container">
+      <div class="file-list-header">
+        <span>Archivos seleccionados ({{ selectedFiles.length }}/{{ maxFiles }}):</span>
+        <button type="button" class="btn-clear" (click)="clearFiles()" [disabled]="isLoading">
+          Vaciar lista
+        </button>
+      </div>
+
+      <ul class="file-list">
+        @for (file of selectedFiles; track file.name; let i = $index) {
+          <li class="file-item">
+            <div class="file-info">
+              <span class="file-name">🎵 {{ file.name }}</span>
+              <span class="file-size">({{ formatFileSize(file.size) }} MB)</span>
+            </div>
+            @if (!isLoading) {
+              <button
+                type="button"
+                class="btn-delete"
+                (click)="removeFile(i)"
+                title="Eliminar archivo"
+              >
+                ✕
+              </button>
+            }
+          </li>
+        }
+      </ul>
+    </div>
+  }
+
+  <button
+    type="button"
+    class="btn-submit"
+    [disabled]="selectedFiles.length === 0 || isLoading || !selectedFormat"
+    (click)="convertFiles()"
+  >
+    @if (isLoading) {
+      <span class="spinner"></span>
+      <span>Procesando y convirtiendo audios...</span>
+    } @else {
+      <span>Convertir a MP3 y Descargar (.ZIP)</span>
+    }
+  </button>
+</div>

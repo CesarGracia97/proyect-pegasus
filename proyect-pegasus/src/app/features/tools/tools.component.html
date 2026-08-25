@@ -1,0 +1,37 @@
+<div class="tools-container">
+  <header class="tools-header">
+    <h1>Herramientas de Conversión</h1>
+    <p>Convierte y procesa tus archivos de datos y multimedia fácilmente.</p>
+  </header>
+
+  <!-- Pestañas de Navegación entre Herramientas -->
+  <nav class="tools-tabs">
+    <button
+      class="tab-btn"
+      [class.active]="activeTool() === 'audio'"
+      (click)="setTool('audio')"
+    >
+      🎵 Convertidor de Audio
+    </button>
+
+    <button
+      class="tab-btn"
+      [class.active]="activeTool() === 'video'"
+      (click)="setTool('video')"
+    >
+      🎬 Convertidor de Video
+    </button>
+  </nav>
+
+  <!-- Renderizado del Componente Activo -->
+  <main class="tool-view">
+    @switch (activeTool()) {
+      @case ('audio') {
+        <app-audio-convert />
+      }
+      @case ('video') {
+        <app-video-convert />
+      }
+    }
+  </main>
+</div>

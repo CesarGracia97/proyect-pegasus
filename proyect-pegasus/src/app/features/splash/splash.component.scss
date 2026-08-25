@@ -1,0 +1,103 @@
+/* Pantalla de fondo estilo Arcade a pantalla completa */
+.capcom-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.capcom-container.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.logo-wrapper {
+  position: relative;
+  width: 85%;
+  max-width: 900px;
+  overflow: hidden; /* Mantiene la barra de brillo dentro de los límites */
+}
+
+.capcom-svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  display: block;
+}
+
+/* Animaciones secuenciales para las rutas del SVG */
+.logo-path {
+  fill-opacity: 0;
+  stroke: #de8d00;
+  stroke-width: 3px;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+
+  animation: 
+    drawOutline 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards,
+    fillColor 0.4s ease 1.5s forwards;
+}
+
+/* Fase 1: Dibuja las líneas iniciales */
+@keyframes drawOutline {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Fase 2: Rellena los colores sólidos y quita el borde */
+@keyframes fillColor {
+  to {
+    fill-opacity: 1;
+    stroke: transparent;
+  }
+}
+
+/* Capa del Brillo Metálico / Shine recorrer de abajo hacia arriba e inversa */
+.shine-overlay {
+  position: absolute;
+  top: -100%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  
+  /* Gradiente lineal diagonal simulando un destello metálico/blanco */
+  background: linear-gradient(
+    0deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0) 38%,
+    rgba(255, 255, 255, 1) 50%, /* Intensidad del centro al máximo blanco puro */
+    rgba(255, 255, 255, 0) 62%,
+    transparent 100%
+  );
+
+  mask-image: linear-gradient(to bottom, black, black);
+  -webkit-mask-image: linear-gradient(to bottom, black, black);
+  
+  mix-blend-mode:overlay; //EFECTO METALIZADO
+  filter: drop-shadow(0 0 0px rgba(255, 255, 255, 1));
+  animation: metallicShine 1.5s ease-in-out 1.9s forwards;
+  opacity: 0;
+}
+
+@keyframes metallicShine {
+  0% {
+    transform: translateY(100%) rotate(-15deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-100%) rotate(-15deg);
+    opacity: 1; 
+  }
+}

@@ -1,0 +1,22 @@
+/* src/styles.scss */
+
+/* 1. Elimina márgenes e inyecciones blancas del navegador */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #121212; /* Mismo color de fondo de tu portafolio */
+  box-sizing: border-box;
+}
+
+/* 2. Reseteo universal de box-sizing para evitar desbordamientos de ancho */
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+/* 3. Asegura que la etiqueta del componente raíz también ocupe todo el alto */
+app-root {
+  display: block;
+  min-height: 100vh;
+}

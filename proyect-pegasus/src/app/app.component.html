@@ -1,0 +1,5 @@
+@if (showIntro()) {
+  <app-splash (animationFinished)="onIntroEnded()" />
+} @else {
+  <router-outlet />
+}
