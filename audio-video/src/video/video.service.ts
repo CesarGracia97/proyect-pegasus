@@ -97,10 +97,12 @@ export class VideoService {
 
         case 'gif':
           command
-            .duration(8)
-            .fps(12)
-            .size('480x?')
-            .outputOptions(['-vf flags=lanczos']);
+            .duration(8) // Protegemos el servidor limitando a 8 segundos
+            .outputOptions([
+              // Inyectamos todo el filtro de video en una sola cadena limpia
+              '-vf',
+              'fps=12,scale=480:-1:flags=lanczos',
+            ]);
           break;
 
         case 'mp3':
