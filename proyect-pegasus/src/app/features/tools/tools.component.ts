@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AudioConvertComponent } from './componets/audio-convert/audio-convert.component';
 import { VideoConvertComponent } from './componets/video-convert/video-convert.component';
 
-export type ActiveTool = 'audio' | 'video';
+export type ActiveTool = 'audio' | 'video' | 'extra' | null;
 
 @Component({
   selector: 'app-tools',
@@ -13,9 +13,27 @@ export type ActiveTool = 'audio' | 'video';
   styleUrl: './tools.component.scss',
 })
 export class ToolsComponent {
-  activeTool = signal<ActiveTool>('audio');
+  activeTool = signal<ActiveTool>(null); 
+
+  toolsList = [
+    { id: 'audio' as ActiveTool, name: 'Convertidor de Audio', icon: '🎵'},
+    { id: 'video' as ActiveTool, name: 'Convertidor de Video', icon: '🎬'},
+    { id: 'extra' as ActiveTool, name: 'Módulo Extra', icon: '🚀'}
+  ];
 
   setTool(tool: ActiveTool): void {
     this.activeTool.set(tool);
+  }
+
+  isClosing = false;
+
+  closePanel() {
+    if (this.isClosing) return;
+    this.isClosing = true;
+
+    setTimeout(() => {
+      this.activeTool.set(null); 
+      this.isClosing = false;
+    }, 1200);
   }
 }

@@ -1,0 +1,22 @@
+<div class="moba-layout">
+  <!-- BARRA LATERAL (Global y fija en el Layout) -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <span class="back-arrow">◁</span>
+      <span>Guía de Funciones</span>
+    </div>
+    <ul class="menu-list">
+      <li *ngFor="let item of menuItems" 
+          class="menu-item" 
+          [class.active]="activeMenu() === item.name"
+          (click)="setMenu(item)">
+        <span>{{ item.name }}</span>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL DINÁMICO -->
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

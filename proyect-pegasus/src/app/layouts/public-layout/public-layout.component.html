@@ -1,0 +1,56 @@
+<div class="public-layout">
+  <header class="top-navbar">
+    
+    <div class="brand-zone">
+      <h1 class="project-title">Project Pegasus</h1>
+      <div class="logo-space">
+        </div>
+    </div>
+
+    <div class="blur-space"></div>
+
+    <div class="nav-carousel-zone">
+      <nav>
+        <div class="carousel-track">
+          <ul class="nav-links">
+            <li><a routerLink="/">Inicio</a></li>
+            <li><a routerLink="/herramientas">Mis Herramientas</a></li>
+            <li><a routerLink="/camisas">Area R7</a></li>
+            <li><a href="#proyectos">Mis Proyectos</a></li>
+            <li><a href="#sobre-mi">Sobre mí</a></li>
+          </ul>
+          <ul class="nav-links" aria-hidden="true">
+            <li><a routerLink="/">Inicio</a></li>
+            <li><a routerLink="/herramientas">Mis Herramientas</a></li>
+            <li><a routerLink="/camisas">Area R7</a></li>
+            <li><a href="#proyectos">Mis Proyectos</a></li>
+            <li><a href="#sobre-mi">Sobre mí</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="info-zone">
+      <div class="clock-space">
+        <span class="digital-time">{{ formattedTime() }}</span> 
+        
+        <div class="clock-illustration">
+          <img [src]="timeAnimation()" alt="Pixel art horario" class="pixel-anim" />
+        </div>
+
+        <div class="clock-preview-card">
+          <div class="preview-illustration">
+            <img [src]="timeAnimation()" alt="Pixel art horario" class="pixel-anim" />
+          </div>
+          <div class="preview-footer">
+            <span class="preview-time-text">{{ formattedTime() }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-body">
+    <router-outlet></router-outlet>
+  </main>
+</div>

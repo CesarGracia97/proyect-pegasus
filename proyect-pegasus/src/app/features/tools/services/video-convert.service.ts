@@ -8,7 +8,9 @@ export type VideoTargetFormat = 'mp4' | 'gif' | 'mp3';
   providedIn: 'root',
 })
 export class VideoConverterService {
-  private apiUrl = 'http://localhost:3000/video/convert';
+  
+  private baseUrl = `http://${window.location.hostname}:3000`;
+  private apiUrl = `${this.baseUrl}/video/convert`
 
   constructor(private http: HttpClient) {}
 

@@ -1,60 +1,353 @@
-.tools-container {
-  min-height: 100vh;
-  background-color: #111;
-  color: #fff;
-  padding: 3rem 1rem;
+$panel-bg: rgba(22, 34, 59, 0.85);
+$gold-border: #d4af37;
+$text-light: #c5d3e8;
+$active-cyan: #00d2ff;
+
+/* ZONA CENTRAL E INFERIOR */
+.combat-zone {
+  display: flex;
+  flex: 1;
+  gap: 30px;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  max-height: 85vh;
+  transition: justify-content 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  &.has-selection {
+    justify-content: space-around;
+    transition: justify-content 1.58s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+}
+
+/* Círculo Mágico Central y Ruleta Orbital */
+.center-emblem {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.tools-header {
-  text-align: center;
-  margin-bottom: 2rem;
-
-  h1 {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: #fff;
-    margin-bottom: 0.5rem;
+  justify-content: center;
+  position: relative;
+  transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  
+  .has-selection & {
+    animation: windPushLeft 1.58s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
   }
 
-  p {
-    color: #7a7a7a;
-    font-size: 1.1rem;
+  &.is-returning {
+    animation: returnToCenter 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+  
+  .emblem-title {
+    text-align: center;
+    margin-bottom: 15px;
+    
+    h2 { 
+      margin: 0; 
+      font-size: 1.6rem; 
+      color: #fff; 
+      text-shadow: 0 0 10px rgba(0, 210, 255, 0.4); 
+      
+      @media (max-width: 480px) {
+        font-size: 1.3rem;
+      }
+    }
+    p { margin: 3px 0 0; color: #8a9bb3; font-size: 0.85rem; }
+  }
+
+  .magic-circle {
+    position: relative;
+    width: 260px;
+    height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    animation: bubbleBurst 0.8s ease-out backwards;
+    --circle-radius: 115px;
+
+    @media (max-width: 480px) {
+      width: 200px;
+      height: 200px;
+      --circle-radius: 85px;
+    }
+    
+    .orbit {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      
+      &.orbit-bg {
+        inset: 12px;
+        background: radial-gradient(circle, rgba(10,16,29,0.95) 30%, rgba(22,34,59,0.7) 100%);
+        border: 2px solid rgba(0, 210, 255, 0.3);
+        box-shadow: inset 0 0 30px rgba(0,0,0,0.8), 0 0 20px rgba(0, 210, 255, 0.15);
+      }
+
+      &.orbit-1 {
+        border: 2px solid rgba(0, 210, 255, 0.2);
+        border-top-color: #00d2ff;
+        border-bottom-color: transparent;
+        animation: spin 15s linear infinite;
+      }
+      
+      &.orbit-2 {
+        inset: -10px;
+        border: 1px dashed rgba(212, 175, 55, 0.35);
+        border-left-color: #d4af37;
+        animation: spin 25s linear infinite reverse;
+      }
+    }
+    
+    .circle-core {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: none;
+      z-index: 5;
+      
+      .core-icon { 
+        font-size: 3rem; 
+        background: none;
+        border: none;
+        box-shadow: none;
+
+        @media (max-width: 480px) {
+          font-size: 2.2rem;
+        }
+      }
+    }
+
+    .roulette-nodes {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      z-index: 10;
+      animation: spin 20s linear infinite;
+    }
+
+    .emblem-node {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 50px;
+      height: 50px;
+      margin-top: -25px;
+      margin-left: -25px;
+      border-radius: 50%;
+      background: #111a2c;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+
+      --angle: calc((360deg / 3) * var(--node-index) - 90deg);
+      transform: rotate(var(--angle)) translate(var(--circle-radius)) rotate(calc(var(--angle) * -1));
+      animation: counter-spin 20s linear infinite;
+
+      .node-icon {
+        font-size: 1.3rem;
+        z-index: 2;
+      }
+
+      .node-ring {
+        position: absolute;
+        inset: -4px;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        transition: all 0.3s;
+      }
+
+      &:hover:not(.active) {
+        background: #18243b;
+      }
+
+      &.active {
+        background: radial-gradient(circle, rgba(0, 210, 255, 0.3) 0%, #111a2c 70%);
+        border: none;
+        box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
+
+        .node-ring {
+          border-color: #d4af37;
+          border-top-color: transparent;
+          border-bottom-color: transparent;
+          animation: spin 3s linear infinite;
+        }
+
+        .node-icon {
+          text-shadow: 0 0 10px #00d2ff;
+        }
+      }
+    }
   }
 }
 
-.tools-tabs {
+/* PANEL DE CONVERSIÓN */
+.conversion-panel {
+  width: 400px;
+  max-width: 100%;
+  height: auto;
+  max-height: 100%;
+  background: $panel-bg;
+  border: 1px solid rgba(0, 210, 255, 0.3);
+  border-radius: 10px;
   display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
+  flex-direction: column;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.5);
+  overflow: hidden;
+  align-self: center;
+  animation: fadeInPanel 1.58s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 
-.tab-btn {
-  background-color: #1a1a1a;
-  border: 1px solid #333;
-  color: #aaa;
-  padding: 0.75rem 1.5rem;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    border-color: #ffab00;
-    color: #fff;
+  &.is-closing {
+    animation: fadeOutPanel 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
   }
 
-  &.active {
-    background-color: #ffab00;
-    color: #000;
-    border-color: #ffab00;
+  .panel-header {
+    padding: 10px 14px;
+    background: rgba(0,0,0,0.4);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    
+    h3 { 
+      margin: 0; 
+      font-size: 0.9rem; 
+      color: #fff; 
+      flex: 1;
+      text-align: center;
+      padding-left: 28px; 
+    }
+
+    .close-panel-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 2px solid transparent;
+      color: $text-light;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      outline: none;
+      padding: 0;
+      flex-shrink: 0;
+
+      span {
+        font-size: 1.1rem;
+        line-height: 1;
+        font-weight: 600;
+        margin-top: -1px;
+      }
+
+      &:hover {
+        background: rgba(0, 210, 255, 0.2);
+        border-color: rgba(0, 210, 255, 0.4);
+        color: #fff;
+        box-shadow: 0 0 8px rgba(0, 210, 255, 0.3);
+      }
+    }
+  }
+
+  .panel-body {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto; 
+    flex: 1;
+    font-size: 0.9rem;
+
+    .dropdown-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex-shrink: 0;
+      
+      label { color: #aaa; font-size: 0.75rem; }
+      
+      .moba-select {
+        background: #0a101d;
+        color: #fff;
+        border: 1px solid #334;
+        padding: 6px 10px;
+        border-radius: 6px;
+        outline: none;
+        font-size: 0.85rem;
+        width: 100%;
+        box-sizing: border-box;
+        
+        &:focus { border-color: $active-cyan; }
+      }
+    }
+
+    .subcomponent-container {
+      width: 100%;
+      box-sizing: border-box;
+      
+      h2, h3, h4 {
+        font-size: 1rem !important;
+        margin-bottom: 8px !important;
+      }
+      
+      p, label {
+        font-size: 0.8rem !important;
+      }
+    }
   }
 }
 
-.tool-view {
-  width: 100%;
-  max-width: 680px;
+/* ANIMACIONES */
+@keyframes bubbleBurst {
+  0% { opacity: 0; transform: scale(0); }
+  50% { opacity: 1; transform: scale(1.15); }
+  75% { transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes windPushLeft {
+  0% { transform: translateX(0) scale(1); filter: drop-shadow(0 0 0 rgba(0, 210, 255, 0)); }
+  35% { transform: translateX(-45px) skewX(-7deg) scale(0.96); filter: drop-shadow(-18px 0 15px rgba(0, 210, 255, 0.3)); }
+  75% { transform: translateX(12px) skewX(2deg) scale(1.01); filter: drop-shadow(-6px 0 8px rgba(0, 210, 255, 0.12)); }
+  100% { transform: translateX(0) scale(1); filter: drop-shadow(0 0 0 rgba(0, 210, 255, 0)); }
+}
+
+@keyframes returnToCenter {
+  0% {
+    transform: translateX(-45px) scale(0.96);
+    filter: drop-shadow(-18px 0 15px rgba(0, 210, 255, 0.3));
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    filter: drop-shadow(0 0 0 rgba(0, 210, 255, 0));
+  }
+}
+
+@keyframes fadeInPanel {
+  0% { opacity: 0; transform: translateX(50px) scale(0.94); }
+  40% { opacity: 0.1; }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes fadeOutPanel {
+  0% { opacity: 1; transform: translateX(0) scale(1); }
+  100% { opacity: 0; transform: translateX(30px) scale(0.94); }
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes counter-spin {
+  100% { transform: rotate(var(--angle)) translate(var(--circle-radius)) rotate(calc(var(--angle) * -1 - 360deg)); }
 }

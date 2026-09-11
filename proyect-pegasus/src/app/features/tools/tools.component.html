@@ -1,37 +1,86 @@
-<div class="tools-container">
-  <header class="tools-header">
-    <h1>Herramientas de Conversión</h1>
-    <p>Convierte y procesa tus archivos de datos y multimedia fácilmente.</p>
-  </header>
+<!-- ZONA CENTRAL E INFERIOR (Ya sin el contenedor .moba-layout externo) -->
+<section class="combat-zone" [class.has-selection]="activeTool() !== null">
+  
+  <!-- Círculo Mágico Central -->
+  <div class="center-emblem" [class.is-returning]="isClosing">
+    <div class="emblem-title">
+      <h2>
+        @if (activeTool() === 'audio') {
+          Convertidor de Audio
+        } @else if (activeTool() === 'video') {
+          Convertidor de Video
+        } @else if (activeTool() === 'extra') {
+          Módulo Extra
+        } @else {
+          Selecciona un Módulo
+        }
+      </h2>
+      <p>{{ activeTool() === null ? 'Haz clic en una opción de la ruleta para comenzar' : 'Selecciona un atributo para equipar' }}</p>
+    </div>
 
-  <!-- Pestañas de Navegación entre Herramientas -->
-  <nav class="tools-tabs">
-    <button
-      class="tab-btn"
-      [class.active]="activeTool() === 'audio'"
-      (click)="setTool('audio')"
-    >
-      🎵 Convertidor de Audio
-    </button>
+    <div class="magic-circle">
+      <div class="orbit orbit-bg"></div>
+      <div class="orbit orbit-1"></div>
+      <div class="orbit orbit-2"></div>
+      
+      <div class="circle-core">
+        <span class="core-icon">
+          @if (activeTool() === 'audio') {
+            🎵
+          } @else if (activeTool() === 'video') {
+            🎬
+          } @else if (activeTool() === 'extra') {
+            🚀
+          } @else {
+            ✨
+          }
+        </span>
+      </div>
 
-    <button
-      class="tab-btn"
-      [class.active]="activeTool() === 'video'"
-      (click)="setTool('video')"
-    >
-      🎬 Convertidor de Video
-    </button>
-  </nav>
+      <div class="roulette-nodes">
+        <div *ngFor="let t of toolsList; let i = index" 
+            class="emblem-node"
+            [class.active]="activeTool() === t.id"
+            (click)="setTool(t.id)"
+            [style.--node-index]="i"
+            [style.--total-nodes]="toolsList.length">
+          <div class="node-icon">{{ t.icon }}</div>
+          <div class="node-ring"></div> 
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <!-- Renderizado del Componente Activo -->
-  <main class="tool-view">
-    @switch (activeTool()) {
-      @case ('audio') {
-        <app-audio-convert />
-      }
-      @case ('video') {
-        <app-video-convert />
-      }
-    }
-  </main>
-</div>
+  <!-- PANEL DE CONVERSIÓN -->
+  @if (activeTool() !== null) {
+    <div class="conversion-panel" [class.is-closing]="isClosing">
+      <div class="panel-header">
+        <h3>Atributos / Conversión</h3>
+        <button class="close-panel-btn" (click)="closePanel()" title="Cerrar">
+          <span>×</span>
+        </button>
+      </div>
+
+      <div class="panel-body">
+        <div class="dropdown-group">
+          <label>Opciones de Compresión</label>
+          <select class="moba-select">
+            <option>Paquete Optimizado ZIP</option>
+            <option>Máxima Prioridad de Velocidad</option>
+          </select>
+        </div>
+
+        <div class="subcomponent-container">
+          @switch (activeTool()) {
+            @case ('audio') {
+              <app-audio-convert />
+            }
+            @case ('video') {
+              <app-video-convert />
+            }
+          }
+        </div>
+      </div>
+    </div>
+  }
+</section>

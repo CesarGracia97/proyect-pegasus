@@ -1,0 +1,78 @@
+$primary-dark: #0a101d;
+$text-light: #c5d3e8;
+$active-cyan: #00d2ff;
+
+.moba-layout {
+  display: flex;
+  height: 100vh;
+  background: radial-gradient(circle at center, #1a2a40 0%, $primary-dark 100%);
+  color: $text-light;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
+}
+
+/* BARRA LATERAL */
+.sidebar {
+  width: 260px;
+  background: linear-gradient(90deg, rgba(10,16,29,1) 0%, rgba(10,16,29,0.4) 100%);
+  border-right: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  flex-direction: column;
+
+  .sidebar-header {
+    padding: 20px;
+    font-size: 1.1rem;
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    .back-arrow { color: $active-cyan; font-weight: bold; }
+  }
+
+  .menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    
+    .menu-item {
+      padding: 14px 20px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s;
+      font-size: 0.95rem;
+      
+      &.active {
+        background: linear-gradient(90deg, rgba(0, 210, 255, 0.25) 0%, transparent 100%);
+        color: #fff;
+        font-weight: bold;
+        
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          width: 4px;
+          background: $active-cyan;
+          box-shadow: 0 0 10px $active-cyan;
+        }
+      }
+      
+      &:hover:not(.active) {
+        background: rgba(255,255,255,0.05);
+      }
+    }
+  }
+}
+
+/* CONTENIDO PRINCIPAL */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 15px 30px;
+  overflow: hidden;
+  justify-content: center;
+}

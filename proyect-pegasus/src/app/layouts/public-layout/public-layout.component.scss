@@ -1,0 +1,224 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+/* Contenedor principal */
+.public-layout {
+  min-height: 100vh;
+  background-color: #121212;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header Navbar */
+.top-navbar {
+  display: flex;
+  align-items: center;
+  height: 90px;
+  border-bottom: 1px solid #333;
+  padding: 0 2rem;
+  gap: 1.5rem;
+  position: relative;
+  z-index: 1000;
+  
+  /* Zona Título y Logo (Rojo y Azul) */
+  .brand-zone {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+
+    .project-title {
+      color: #de8d00;
+      margin: 0;
+      font-size: 2rem;
+      white-space: nowrap;
+    }
+
+    .logo-space {
+      width: 60px;
+      height: 60px;
+    }
+  }
+
+  /* Espacio de difuminación (Rojo estrecho) */
+  .blur-space {
+    width: 30px;
+    height: 100%;
+  }
+
+  /* Zona del Carrusel / Enlaces (Amarillo) */
+  .nav-carousel-zone {
+    flex: 1; 
+    display: flex;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+
+    nav {
+      display: flex;
+      width: 100%;
+      align-items: center;
+    }
+
+    .carousel-track {
+      display: flex;
+      width: max-content;
+      animation: scroll-left 18s linear infinite;
+
+      &:hover {
+        animation-play-state: paused;
+      }
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 3rem;
+      list-style: none;
+      margin: 0;
+      padding: 0 1.5rem; 
+
+      a {
+        color: #aaa;
+        text-decoration: none;
+        transition: color 0.3s ease, text-shadow 0.3s ease;
+        white-space: nowrap;
+        font-size: 1.05rem;
+
+        &:hover {
+          color: #fff;
+          text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+        }
+      }
+    }
+  }
+
+  /* Animación base para el bucle infinito */
+  @keyframes scroll-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } 
+  }
+
+  /* Zona Reloj (Naranja) */
+  .info-zone {
+    display: flex;
+    align-items: center;
+    padding-left: 1rem;
+    position: relative;
+
+    .clock-space {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.35rem 0.8rem;
+      border-radius: 8px;
+      background: rgba(18, 18, 18, 0.8);
+      border: 1px solid rgba(192, 56, 255, 0.25);
+      cursor: pointer;
+      position: relative;
+
+      /* Mini ilustración al lado de la hora */
+      .clock-illustration {
+        width: 42px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border-radius: 4px;
+
+        .pixel-anim {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          image-rendering: pixelated;
+        }
+      }
+
+      /* Hora digital estilo LED */
+      .digital-time {
+        color: #c038ff;
+        font-family: 'Orbitron', 'Courier New', monospace;
+        font-size: 1.1rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-shadow: 0 0 6px rgba(192, 56, 255, 0.8), 
+                     0 0 12px rgba(192, 56, 255, 0.4);
+      }
+
+      /* --- VENTANA FLOTANTE DE PREVISUALIZACIÓN --- */
+      .clock-preview-card {
+        position: absolute;
+        top: calc(100% + 12px);
+        right: 0;
+        width: 230px;
+        background: #18181b;
+        border: 1px solid rgba(192, 56, 255, 0.3);
+        border-radius: 10px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        
+        /* Oculto inicialmente */
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+        z-index: 1100;
+
+        /* GIF Arriba en la ventana flotante */
+        .preview-illustration {
+          width: 100%;
+          height: 120px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          border-radius: 6px;
+          background: #111;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+
+          .pixel-anim {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            image-rendering: pixelated;
+          }
+        }
+
+        /* Hora Abajo en la ventana flotante */
+        .preview-footer {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding-top: 6px;
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+          .preview-time-text {
+            color: #c038ff;
+            font-family: 'Orbitron', 'Courier New', monospace;
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 6px rgba(192, 56, 255, 0.8), 
+                         0 0 12px rgba(192, 56, 255, 0.4);
+          }
+        }
+      }
+
+      /* Efecto al pasar el puntero: se despliega la ventana flotante */
+      &:hover .clock-preview-card {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
+/* Área Central / Body (Fucsia) */
+.main-body {
+  flex: 1;
+  padding: 2rem;
+}

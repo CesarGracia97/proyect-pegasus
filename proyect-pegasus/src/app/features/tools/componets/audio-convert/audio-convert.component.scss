@@ -1,70 +1,45 @@
-.tools-container {
-  min-height: 100vh;
-  background-color: #111;
-  color: #fff;
-  padding: 3rem 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.tools-header {
-  text-align: center;
-  margin-bottom: 2rem;
-
-  h1 {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: #fff;
-    margin-bottom: 0.5rem;
-  }
-
-  p {
-    color: #7a7a7a;
-    font-size: 1.1rem;
-  }
-}
-
 .converter-card {
-  background-color: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 16px;
+  background-color: transparent; // Hereda el fondo del panel contenedor
+  border: none;
+  border-radius: 0;
   width: 100%;
-  max-width: 680px;
-  padding: 2rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  max-width: 100%;
+  padding: 0;
+  box-shadow: none;
 }
 
 .card-header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  border-bottom: 1px solid #2a2a2a;
-  padding-bottom: 1rem;
-  margin-bottom: 1.5rem;
+  gap: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
 
   h2 {
-    font-size: 1.25rem;
+    font-size: 1.05rem;
     color: #e0e0e0;
+    margin: 0;
   }
 }
 
 .icon-audio {
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
   stroke: #ffab00;
+  flex-shrink: 0;
 }
 
 /* --- Estilos del Selector de Formato --- */
 .format-selector-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 4px;
 }
 
 .selector-label {
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: #ccc;
 }
@@ -73,35 +48,34 @@
   position: relative;
   width: 100%;
 
-  /* Flecha personalizada en tono dorado */
   &::after {
     content: '▼';
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     color: #ffab00;
     position: absolute;
-    right: 1rem;
+    right: 0.8rem;
     top: 50%;
     transform: translateY(-50%);
     pointer-events: none;
-    transition: transform 0.2s ease;
   }
 }
 
 .format-select {
   width: 100%;
-  padding: 0.8rem 2.5rem 0.8rem 1rem;
-  background-color: #141414;
+  padding: 0.6rem 2rem 0.6rem 0.8rem;
+  background-color: #0a101d;
   color: #fff;
-  border: 1px solid #333;
-  border-radius: 10px;
-  font-size: 1rem;
+  border: 1px solid #334;
+  border-radius: 8px;
+  font-size: 0.85rem;
   font-family: inherit;
   outline: none;
   cursor: pointer;
-  appearance: none; /* Elimina el estilo nativo del navegador */
+  appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   transition: all 0.3s ease;
+  box-sizing: border-box;
 
   &:hover:not(:disabled) {
     border-color: #ffab00;
@@ -109,7 +83,7 @@
 
   &:focus:not(:disabled) {
     border-color: #ffab00;
-    box-shadow: 0 0 0 3px rgba(255, 171, 0, 0.15);
+    box-shadow: 0 0 0 2px rgba(255, 171, 0, 0.15);
   }
 
   &:disabled {
@@ -117,11 +91,10 @@
     cursor: not-allowed;
   }
 
-  /* Estilos de las opciones dentro del desplegable */
   option {
     background-color: #1a1a1a;
     color: #fff;
-    padding: 0.5rem;
+    padding: 0.4rem;
 
     &:disabled {
       color: #666;
@@ -129,15 +102,15 @@
   }
 }
 
-/* --- Dropzone --- */
+/* --- Dropzone Compacto --- */
 .dropzone {
-  border: 2px dashed #444;
-  border-radius: 12px;
-  padding: 2.5rem 1.5rem;
+  border: 2px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  padding: 1.2rem 1rem;
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  background-color: #141414;
+  background-color: rgba(10, 16, 29, 0.5);
 
   &:hover:not(.disabled) {
     border-color: #ffab00;
@@ -157,37 +130,38 @@
 }
 
 .upload-icon-wrapper {
-  background: #222;
-  width: 56px;
-  height: 56px;
+  background: rgba(255, 255, 255, 0.05);
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 1rem;
+  margin: 0 auto 0.5rem;
 }
 
 .icon-upload {
-  width: 28px;
-  height: 28px;
+  width: 20px;
+  height: 20px;
   stroke: #ffab00;
 }
 
 .dropzone-text {
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: 500;
   color: #ddd;
+  margin: 0;
 
   &.lock-text {
     color: #888;
-    font-size: 1rem;
+    font-size: 0.8rem;
   }
 }
 
 .dropzone-subtext {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: #7a7a7a;
-  margin-top: 0.25rem;
+  margin-top: 0.2rem;
 
   strong {
     color: #ffab00;
@@ -196,15 +170,15 @@
 
 /* Lista de archivos */
 .file-list-container {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
 }
 
 .file-list-header {
   display: flex;
   justify-content: space-between;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: #7a7a7a;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 .btn-clear {
@@ -212,7 +186,7 @@
   border: none;
   color: #ff5252;
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
 
   &:hover {
     text-decoration: underline;
@@ -223,7 +197,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  max-height: 180px;
+  max-height: 130px;
   overflow-y: auto;
 }
 
@@ -231,22 +205,24 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #222;
-  border: 1px solid #333;
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
-  font-size: 0.9rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  margin-bottom: 0.4rem;
+  font-size: 0.8rem;
 }
 
 .file-name {
   color: #eee;
   margin-right: 0.5rem;
+  word-break: break-all;
 }
 
 .file-size {
   color: #7a7a7a;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
 }
 
 .btn-delete {
@@ -254,7 +230,7 @@
   border: none;
   color: #7a7a7a;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.9rem;
 
   &:hover {
     color: #ff5252;
@@ -263,10 +239,10 @@
 
 /* Alertas */
 .alert {
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  margin-top: 1rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  margin-top: 0.8rem;
 }
 
 .alert-error {
@@ -284,20 +260,21 @@
 /* Botón Submit */
 .btn-submit {
   width: 100%;
-  margin-top: 1.5rem;
-  padding: 0.9rem;
-  border-radius: 10px;
+  margin-top: 1rem;
+  padding: 0.7rem;
+  border-radius: 8px;
   border: none;
   background-color: #ffab00;
   color: #000;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 0.85rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   transition: background-color 0.2s;
+  box-sizing: border-box;
 
   &:hover:not(:disabled) {
     background-color: #e09600;
@@ -312,9 +289,9 @@
 
 /* Spinner */
 .spinner {
-  width: 20px;
-  height: 20px;
-  border: 3px solid rgba(0, 0, 0, 0.2);
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
   border-radius: 50%;
   border-top-color: #000;
   animation: spin 0.8s linear infinite;
