@@ -9,8 +9,9 @@ export type VideoTargetFormat = 'mp4' | 'gif' | 'mp3';
 })
 export class VideoConverterService {
   
-  private baseUrl = `http://${window.location.hostname}:3000`;
-  private apiUrl = `${this.baseUrl}/video/convert`
+  // private baseUrl = `http://${window.location.hostname}:3000`;
+  // private apiUrl = `${this.baseUrl}/video/convert`
+  private apiUrl = '/api/v1/media/video/convert';
 
   constructor(private http: HttpClient) {}
 

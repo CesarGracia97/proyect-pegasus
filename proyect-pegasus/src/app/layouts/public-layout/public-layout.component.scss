@@ -25,18 +25,28 @@
   .brand-zone {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1.2rem;
+
+    .logo-space {
+      width: 55px; /* Tamaño adaptado para coincidir con el h1 de 2rem */
+      height: 55px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .brand-logo {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        filter: brightness(0) invert(1); /* Transforma el color nativo a blanco 100% */
+      }
+    }
 
     .project-title {
       color: #de8d00;
       margin: 0;
       font-size: 2rem;
       white-space: nowrap;
-    }
-
-    .logo-space {
-      width: 60px;
-      height: 60px;
     }
   }
 

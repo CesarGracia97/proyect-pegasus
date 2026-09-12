@@ -59,7 +59,7 @@ export class PublicLayoutComponent implements OnInit, OnDestroy {
     } else if (hours >= 9 && hours < 18) {
       // Mediodía / Día (9 AM - 5 PM)
       availableGifs = ['mediodia_001.gif', 'mediodia_002.gif', 'mediodia_003.gif', 'mediodia_004.gif'];
-    } else if (hours >= 18 && hours < 20) {
+    } else if (hours >= 18 && hours < 19) {
       // Atardecer (6 PM - 7 PM)
       availableGifs = ['Atardecer_001.gif', 'Atardecer_002.gif'];
     } else {

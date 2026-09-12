@@ -6,9 +6,10 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AudioConverterService {
-  private baseUrl = `http://${window.location.hostname}:3000`;
-  private apiUrl = `${this.baseUrl}/audio/convert-to-mp3`;
-
+  // private baseUrl = `http://${window.location.hostname}:3000`;
+  // private apiUrl = `${this.baseUrl}/audio/convert-to-mp3`;
+  private apiUrl = '/api/v1/media/audio/convert-to-mp3';
+  
   constructor(private http: HttpClient) {}
 
   convertAudioToZip(files: File[]): Observable<Blob> {
