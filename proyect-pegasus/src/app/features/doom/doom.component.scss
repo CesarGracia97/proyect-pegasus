@@ -1,0 +1,132 @@
+$primary-dark: #0a101d;
+$gold-border: #d4af37;
+$active-cyan: #00d2ff;
+$text-light: #c5d3e8;
+
+.doom-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+
+  h2 {
+    color: #fff;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    text-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+  }
+
+  /* Pantalla de Inicio (Sin cuadro contenedor) */
+  .doom-splash {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 20px;
+    gap: 35px;
+
+    .splash-logo {
+      width: 320px;
+      height: auto;
+      /* Sombra y resplandor rojo multinivel para el logo */
+      filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.8)) 
+              drop-shadow(0 0 35px rgba(200, 0, 0, 0.5));
+      transition: filter 0.3s ease, transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.02);
+        filter: drop-shadow(0 0 25px rgba(255, 0, 0, 1)) 
+                drop-shadow(0 0 50px rgba(255, 0, 0, 0.7));
+      }
+    }
+
+    .btn-jugar {
+      background: linear-gradient(135deg, #d4af37 0%, #aa820a 100%);
+      color: #000;
+      font-weight: bold;
+      font-size: 1.2rem;
+      padding: 14px 45px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      letter-spacing: 1.5px;
+      transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+
+      &:hover {
+        transform: scale(1.05);
+        background: linear-gradient(135deg, #00d2ff 0%, #0088cc 100%);
+        color: #fff;
+        box-shadow: 0 0 20px rgba(0, 210, 255, 0.7);
+      }
+    }
+  }
+
+  /* Contenedor del Juego */
+  .dos-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+
+    .controls-hint {
+      font-size: 0.85rem;
+      color: $text-light;
+      background: rgba(10, 16, 29, 0.7);
+      padding: 6px 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 210, 255, 0.2);
+
+      strong {
+        color: $active-cyan;
+      }
+    }
+
+    canvas {
+      width: 640px;
+      height: 400px;
+      background-color: #000;
+      border: 2px solid #333;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+      outline: none;
+      cursor: crosshair;
+
+      image-rendering: pixelated;
+      transform: translateZ(0);
+      will-change: transform;
+    }
+
+    .btn-cerrar {
+    margin-top: 5px;
+    background: rgba(180, 20, 20, 0.2);
+    color: #ff5555;
+    font-weight: bold;
+    font-size: 0.9rem;
+    padding: 10px 24px;
+    border: 1px solid rgba(255, 60, 60, 0.5);
+    border-radius: 6px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.25s ease;
+    backdrop-filter: blur(4px);
+
+    &:hover {
+      background: rgba(220, 20, 20, 0.85);
+      color: #fff;
+      border-color: #ff0000;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+  }
+}

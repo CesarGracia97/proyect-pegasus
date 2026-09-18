@@ -1,0 +1,23 @@
+<div class="doom-container">
+  <!-- Pantalla de Inicio (Splash) -->
+  <div *ngIf="!juegoIniciado" class="doom-splash">
+    <img src="assets/img/Doom.svg" alt="Doom Logo" class="splash-logo" />
+    <button class="btn-jugar" (click)="iniciarJuego()">
+      <span>JUGAR</span>
+    </button>
+  </div>
+
+  <!-- Contenedor del Emulador DOS -->
+  <div *ngIf="juegoIniciado" class="dos-wrapper">
+    <div class="controls-hint">
+      <span>💡 Haz clic sobre el juego para bloquear el mouse. Presiona <strong>ESC</strong> para liberarlo.</span>
+    </div>
+
+    <canvas #dosCanvas id="dosCanvas" tabindex="0" (click)="capturarMouse()"></canvas>
+
+    <!-- Botón para finalizar la partida -->
+    <button class="btn-cerrar" (click)="cerrarJuego()">
+      ✖ CERRAR JUEGO
+    </button>
+  </div>
+</div>

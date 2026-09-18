@@ -19,7 +19,7 @@ $text-light: #c5d3e8;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Opciones centradas verticalmente */
+  justify-content: center;
   background: transparent;
   transition: width 0.35s cubic-bezier(0.25, 1, 0.5, 1), background 0.35s ease, box-shadow 0.35s ease;
   z-index: 100;
@@ -39,7 +39,7 @@ $text-light: #c5d3e8;
     }
   }
 
-  /* EJE VERTICAL CENTRAL (z-index 1) */
+  /* EJE VERTICAL CENTRAL */
   .axis-line {
     position: absolute;
     top: 10%;
@@ -57,7 +57,7 @@ $text-light: #c5d3e8;
     display: flex;
     flex-direction: column;
     gap: 32px;
-    z-index: 2; /* Sobrepuesto al eje vertical */
+    z-index: 2;
 
     .diamond-item {
       display: flex;
@@ -66,7 +66,6 @@ $text-light: #c5d3e8;
       cursor: pointer;
       position: relative;
 
-      /* ROMBO PERFECTO BLOQUEADO (EVITA DEFORMACIÓN A RECTÁNGULO) */
       .diamond-shape {
         position: relative;
         z-index: 2;
@@ -78,7 +77,6 @@ $text-light: #c5d3e8;
         flex-shrink: 0;
         box-sizing: border-box;
 
-        /* Fondo totalmente opaco para bloquear la línea del eje que pasa por detrás */
         background: $bg-dark;
         border: 2px solid rgba(0, 210, 255, 0.4);
         transform: rotate(45deg);
@@ -92,7 +90,7 @@ $text-light: #c5d3e8;
           display: flex;
           align-items: center;
           justify-content: center;
-          transform: rotate(-45deg); /* Des-rotación del icono para mantenerlo vertical */
+          transform: rotate(-45deg);
           stroke-width: 2.2px;
           opacity: 0.8;
         }
@@ -102,8 +100,21 @@ $text-light: #c5d3e8;
           font-weight: 800;
           font-style: italic;
           letter-spacing: -0.5px;
-          transform: rotate(-45deg); /* Des-rotación para mantenerse recto */
+          transform: rotate(-45deg);
           user-select: none;
+        }
+
+        /* ICONO SVG PERSONALIZADO (DOOM) */
+        .custom-svg-icon {
+          width: 22px;
+          height: 22px;
+          object-fit: contain;
+          transform: rotate(-45deg);
+          pointer-events: none;
+          /* Convierte el gráfico negro en blanco brillante */
+          filter: brightness(0) invert(1);
+          opacity: 0.85;
+          transition: all 0.25s ease;
         }
       }
 
@@ -127,12 +138,16 @@ $text-light: #c5d3e8;
         .label-text {
           color: #fff;
         }
+        .custom-svg-icon {
+          opacity: 1;
+          filter: brightness(0) invert(1) drop-shadow(0 0 5px $active-cyan);
+        }
       }
 
-      /* ESTADO ACTIVO CON ROMBO IDENTICO */
+      /* ESTADO ACTIVO */
       &.active {
         .diamond-shape {
-          background: #0a2238; /* Color azul oscuro totalmente opaco */
+          background: #0a2238;
           border-color: $active-cyan;
           box-shadow: 0 0 18px $active-cyan, inset 0 0 8px rgba(0, 210, 255, 0.4);
           transform: rotate(45deg) scale(1.1);
@@ -140,6 +155,11 @@ $text-light: #c5d3e8;
           .icon {
             opacity: 1;
           }
+        }
+
+        .custom-svg-icon {
+          opacity: 1;
+          filter: brightness(0) invert(1) drop-shadow(0 0 6px $active-cyan);
         }
 
         .label-text {

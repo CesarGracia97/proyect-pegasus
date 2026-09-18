@@ -16,6 +16,7 @@
         <div class="diamond-shape">
           <lucide-icon *ngIf="item.icon" [img]="item.icon" class="icon" [size]="18"></lucide-icon>
           <span *ngIf="item.customText" class="icon custom-kss">{{ item.customText }}</span>
+          <img *ngIf="item.svgPath" [src]="item.svgPath" [alt]="item.name" class="icon custom-svg-icon" />
         </div>
 
         <!-- ETIQUETA DE TEXTO -->

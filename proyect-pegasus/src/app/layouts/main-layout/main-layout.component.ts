@@ -5,9 +5,11 @@ import {
   LucideAngularModule, 
   RefreshCw, 
   Star, 
-  Bell, 
-  Gamepad2, 
-  LucideIconData 
+  LayoutGrid, 
+  User, 
+  Box, 
+  LucideIconData, 
+  Home,
 } from 'lucide-angular';
 
 interface MenuItem {
@@ -15,6 +17,7 @@ interface MenuItem {
   route: string;
   icon?: LucideIconData;
   customText?: string;
+  svgPath?: string;
 }
 
 @Component({
@@ -22,30 +25,31 @@ interface MenuItem {
   standalone: true,
   imports: [CommonModule, RouterOutlet, LucideAngularModule],
   templateUrl: './main-layout.component.html',
-  styleUrls: ['./main-layout.component.scss', './main-layout.responsive.scss']
+  styleUrl: './main-layout.component.scss'
 })
 export class MainLayoutComponent {
   activeMenu = signal('Convertidores');
   isExpanded = signal(false);
 
   menuItems: MenuItem[] = [
+    { name: 'Inicio', route: '/', icon: Home },
     { name: 'Convertidores', route: '/herramientas', icon: RefreshCw },
     { name: 'Área R7', route: '/shirt-brands', icon: Star },
     { name: 'K-SS Engine', route: '/engine', customText: 'K➔SS' },
-    { name: 'Notificador RH', route: '/notificador', icon: Bell },
-    { name: 'Patio de Juegos', route: '/patio', icon: Gamepad2 }
+    { name: 'Proyectos', route: '/proyectos', icon: LayoutGrid },
+    { name: 'Sobre mí', route: '/sobre-mi', icon: User },
+    { name: 'SandBox', route: '/sandbox', icon: Box },
+    { name: 'Doom', route: '/doom',  svgPath: 'assets/img/Doom.svg' }
   ];
 
   constructor(private router: Router) {}
 
   onItemClick(item: MenuItem): void {
-    // 1. Si la barra está colapsada (estado pasivo), solo la desplegamos
     if (!this.isExpanded()) {
       this.isExpanded.set(true);
       return;
     }
 
-    // 2. Si la barra ya está activa (desplegada), navegamos a la ruta y actualizamos el ícono
     this.activeMenu.set(item.name);
     this.router.navigate([item.route]);
   }

@@ -35,6 +35,10 @@ export const routes: Routes = [
         path: 'shirt-brands',
         loadComponent: () => import('./features/shirt-brands/shirt-brands.component').then(m => m.ShirtBrandsComponent)
       },
+      {
+        path: 'doom',
+        loadComponent: () => import('./features/doom/doom.component').then(m => m.DoomComponent)
+      }
     ]
   },
 
