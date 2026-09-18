@@ -1,0 +1,213 @@
+$primary-dark: #0a101d;
+$panel-bg: rgba(22, 34, 59, 0.85);
+$active-cyan: #00d2ff;
+$gold-border: #d4af37;
+
+.merch-container {
+  display: flex;
+  gap: 25px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+  }
+}
+
+.viewer-section {
+  flex: 1.2;
+  background: radial-gradient(circle at center, #1a2a40 0%, $primary-dark 100%);
+  border: 1px solid rgba(0, 210, 255, 0.3);
+  border-radius: 12px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+  .viewer-header {
+    margin-bottom: 10px;
+    
+    h2 { 
+      font-size: 1.3rem; 
+      margin: 0; 
+      color: #fff; 
+      text-shadow: 0 0 10px rgba(0, 210, 255, 0.4); 
+    }
+    
+    p { 
+      font-size: 0.85rem; 
+      color: #8a9bb3; 
+      margin: 4px 0 0; 
+    }
+  }
+
+  .canvas-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 8px;
+
+    canvas {
+      width: 100% !important;
+      height: 500px !important;
+      outline: none;
+      cursor: grab;
+
+      &:active {
+        cursor: grabbing;
+      }
+    }
+  }
+}
+
+.config-panel {
+  flex: 0.8;
+  background: $panel-bg;
+  border: 1px solid rgba(0, 210, 255, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+
+  h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+    color: $active-cyan;
+  }
+
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    label {
+      font-size: 0.85rem;
+      color: #c5d3e8;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: $active-cyan;
+    }
+  }
+
+  .moba-select {
+    width: 100%;
+    padding: 10px;
+    background: rgba(10, 16, 29, 0.9);
+    border: 1px solid rgba(0, 210, 255, 0.4);
+    border-radius: 6px;
+    color: #fff;
+    font-size: 0.9rem;
+    outline: none;
+    cursor: pointer;
+
+    &:focus {
+      border-color: $active-cyan;
+      box-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
+    }
+  }
+
+  .color-picker-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .color-input {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      background: transparent;
+
+      &::-webkit-color-swatch-wrapper { 
+        padding: 0; 
+      }
+      
+      &::-webkit-color-swatch { 
+        border: 2px solid $gold-border; 
+        border-radius: 50%; 
+      }
+
+      &::-moz-color-swatch {
+        border: 2px solid $gold-border; 
+        border-radius: 50%;
+      }
+    }
+
+    .color-hex { 
+      font-size: 0.9rem; 
+      font-weight: bold; 
+    }
+  }
+
+  .upload-box {
+    .upload-btn {
+      display: block;
+      padding: 10px;
+      background: rgba(0, 210, 255, 0.15);
+      border: 1px dashed $active-cyan;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 0.9rem;
+
+      &:hover {
+        background: rgba(0, 210, 255, 0.3);
+      }
+    }
+  }
+
+  .preview-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px;
+    border-radius: 6px;
+
+    span { 
+      font-size: 0.8rem; 
+      color: #aaa; 
+    }
+    
+    img { 
+      max-width: 50px; 
+      max-height: 50px; 
+      border-radius: 4px; 
+      object-fit: contain; 
+    }
+  }
+
+  .action-btn {
+    margin-top: auto;
+    padding: 12px;
+    background: linear-gradient(90deg, #00d2ff 0%, #0072ff 100%);
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+}

@@ -1,21 +1,33 @@
 <div class="moba-layout">
-  <!-- BARRA LATERAL (Global y fija en el Layout) -->
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <span class="back-arrow">◁</span>
-      <span>Guía de Funciones</span>
-    </div>
-    <ul class="menu-list">
+  <!-- BARRA LATERAL -->
+  <aside class="sidebar" [class.expanded]="isExpanded()">
+    
+    <!-- LÍNEA VERTICAL DEL EJE -->
+    <div class="axis-line"></div>
+
+    <!-- MENÚ DE ROMBOS -->
+    <ul class="diamond-menu">
       <li *ngFor="let item of menuItems" 
-          class="menu-item" 
+          class="diamond-item" 
           [class.active]="activeMenu() === item.name"
-          (click)="setMenu(item)">
-        <span>{{ item.name }}</span>
+          (click)="onItemClick(item)">
+        
+        <!-- CONTENEDOR EN ROMBO -->
+        <div class="diamond-shape">
+          <lucide-icon *ngIf="item.icon" [img]="item.icon" class="icon" [size]="18"></lucide-icon>
+          <span *ngIf="item.customText" class="icon custom-kss">{{ item.customText }}</span>
+        </div>
+
+        <!-- ETIQUETA DE TEXTO -->
+        <span class="label-text">{{ item.name }}</span>
       </li>
     </ul>
   </aside>
 
-  <!-- CONTENIDO PRINCIPAL DINÁMICO -->
+  <!-- TELÓN TRANSPARENTE -->
+  <div class="backdrop" *ngIf="isExpanded()" (click)="toggleSidebar()"></div>
+
+  <!-- CONTENIDO PRINCIPAL -->
   <main class="main-content">
     <router-outlet></router-outlet>
   </main>

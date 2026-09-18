@@ -1,0 +1,44 @@
+/* --- TRANSICIÓN MEGA MAN ZERO (DIAGONAL Z-SLASH) --- */
+.curtain-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 99999;
+  overflow: hidden;
+
+  .z-block {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000000; // Negro puro
+    transition: transform 0.28s cubic-bezier(0.77, 0, 0.175, 1);
+    will-change: transform;
+
+    /* Bloque Superior Derecho (Rectángulo superior + Triángulo) */
+    &.z-top {
+      clip-path: polygon(0 0, 100% 0, 100% 72%, 28% 72%, 72% 28%, 0 28%);
+      transform: translate(100%, -100%); /* Desplazamiento diagonal fuera de pantalla (Arriba-Derecha) */
+    }
+
+    /* Bloque Inferior Izquierdo (Rectángulo inferior + Triángulo) */
+    &.z-bottom {
+      clip-path: polygon(0 28%, 72% 28%, 28% 72%, 100% 72%, 100% 100%, 0 100%);
+      transform: translate(-100%, 100%); /* Desplazamiento diagonal fuera de pantalla (Abajo-Izquierda) */
+    }
+  }
+
+  /* Estado Activo: Se deslizan en diagonal hasta sellar la pantalla al 100% */
+  &.active {
+    pointer-events: all;
+
+    .z-top,
+    .z-bottom {
+      transform: translate(0, 0);
+    }
+  }
+}

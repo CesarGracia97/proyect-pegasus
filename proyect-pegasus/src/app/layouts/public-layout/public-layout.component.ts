@@ -1,12 +1,15 @@
 import { Component, OnInit, OnDestroy, signal, computed } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-public-layout',
   standalone: true,
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './public-layout.component.html',
-  styleUrl: './public-layout.component.scss'
+  styleUrls: [
+    './public-layout.component.scss', 
+    './public-layout.responsive.scss'
+  ]
 })
 export class PublicLayoutComponent implements OnInit, OnDestroy {
   private now = signal(new Date());
@@ -15,13 +18,18 @@ export class PublicLayoutComponent implements OnInit, OnDestroy {
   // Señal para la ruta de la animación elegida aleatoriamente
   timeAnimation = signal<string>('');
 
-  // Formato digital de 12 horas con AM/PM (sin segundos)
-  formattedTime = computed(() => {
-    return this.now().toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
-    });
+  // Señales computadas para horas, minutos y período (AM/PM)
+  hours = computed(() => {
+    const h = this.now().getHours() % 12 || 12;
+    return h.toString().padStart(2, '0');
+  });
+
+  minutes = computed(() => {
+    return this.now().getMinutes().toString().padStart(2, '0');
+  });
+
+  period = computed(() => {
+    return this.now().getHours() >= 12 ? 'PM' : 'AM';
   });
 
   ngOnInit(): void {

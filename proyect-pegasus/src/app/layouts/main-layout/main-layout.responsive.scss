@@ -1,0 +1,34 @@
+/* ESTILOS RESPONSIVE PARA PANTALLAS MÓVILES Y ORIENTACIÓN VERTICAL */
+@media (max-width: 768px), (orientation: portrait) {
+  .moba-layout {
+    position: relative;
+  }
+
+  /* La barra lateral pasa a superponerse sobre la página */
+  .sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 100;
+
+    /* Al expandirse flota por encima del contenido sin empujarlo ni alterarlo */
+    &.expanded {
+      width: 260px;
+      box-shadow: 15px 0 35px rgba(0, 0, 0, 0.85);
+    }
+  }
+
+  /* El contenido principal ocupa la pantalla completa y se mantiene intacto */
+  .main-content {
+    width: 100vw;
+    height: 100vh;
+    padding-left: 70px; /* Compensa el espacio del eje en reposo para mantener el centro óptimo */
+    box-sizing: border-box;
+  }
+
+  /* Capa de sombra detrás del menú al abrirse */
+  .backdrop {
+    z-index: 95;
+  }
+}

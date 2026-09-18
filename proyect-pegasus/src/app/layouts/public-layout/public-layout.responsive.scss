@@ -1,0 +1,276 @@
+// --- PALETA DE COLORES PROJECT PEGASUS ---
+$bg-main: #050816;         
+$bg-panel: #0a1022;        
+$blue-electric: #008cff;   
+$cyan-tech: #00b8ff;       
+$text-primary: #f2f5f9;    
+$text-secondary: #9ca8b8;  
+$border-neon: rgba(0, 184, 255, 0.35);
+
+@media (max-width: 768px) {
+  
+  .top-navbar {
+    height: 58px;
+    padding: 0 1rem;
+    justify-content: space-between;
+
+    .brand-zone {
+      gap: 0.5rem;
+
+      .logo-space {
+        width: 30px;
+        height: 30px;
+      }
+
+      .project-title {
+        font-size: 1.1rem;
+      }
+    }
+
+    .blur-space,
+    .nav-carousel-zone {
+      display: none !important;
+    }
+
+    .info-zone {
+      padding-left: 0;
+
+      .clock-interactive-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .clock-illustration {
+          width: 105px;
+          height: 42px;
+
+          &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(5, 8, 22, 0.45);
+            border-radius: 2px;
+            pointer-events: none;
+          }
+
+          .clock-preview-card {
+            display: flex;
+            position: absolute;
+            top: calc(100% + 12px);
+            right: 0;
+            width: 210px;
+            z-index: 2500;
+            pointer-events: auto;
+          }
+
+          &:hover .clock-preview-card,
+          &:active .clock-preview-card {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+          }
+        }
+
+        .time-box {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 5;
+          padding: 0;
+          pointer-events: none;
+          width: max-content;
+
+          .digital-time {
+            font-size: 0.82rem;
+            color: #ffffff;
+            text-shadow: 0 0 6px rgba(0, 184, 255, 0.9), 0 0 3px #000;
+            letter-spacing: 1px;
+            white-space: nowrap;
+          }
+        }
+      }
+    }
+  }
+
+  .main-body {
+    padding: 1.25rem;
+    padding-bottom: 95px;
+  }
+
+  /* BARRA INFERIOR CON CORTE TRANSPARENTE CENTRAL EN EL BORDE */
+  .bottom-nav-mobile {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    height: 60px;
+    
+    /* El gradiente dibuja la línea neón superior excepto entre -45px y +45px del centro */
+    background: 
+      linear-gradient(
+        to right,
+        $border-neon 0%,
+        $border-neon calc(50% - 45px),
+        transparent calc(50% - 45px),
+        transparent calc(50% + 45px),
+        $border-neon calc(50% + 45px),
+        $border-neon 100%
+      ) top / 100% 1px no-repeat,
+      rgba(10, 16, 34, 0.96);
+      
+    backdrop-filter: blur(16px);
+    border-top: none; /* Removido para usar el gradiente con apertura central */
+    border-radius: 0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.85);
+    z-index: 2000;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 4px;
+    overflow: visible;
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      color: $text-secondary;
+      text-decoration: none;
+      font-size: 0.7rem;
+      font-weight: 500;
+      transition: all 0.25s ease;
+      flex: 1;
+      height: 100%;
+
+      .nav-icon {
+        width: 21px;
+        height: 21px;
+        transition: transform 0.25s ease, stroke 0.25s ease;
+      }
+
+      .kss-icon {
+        font-style: italic;
+        font-weight: 800;
+        font-family: 'Exo 2', 'Segoe UI', sans-serif;
+        font-size: 0.92rem;
+        line-height: 1;
+        height: 21px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        letter-spacing: -0.5px;
+        transition: transform 0.25s ease, color 0.25s ease;
+      }
+
+      &:hover, &.active {
+        color: $cyan-tech;
+
+        .nav-icon {
+          stroke: $cyan-tech;
+          transform: translateY(-2px);
+          filter: drop-shadow(0 0 6px rgba(0, 184, 255, 0.8));
+        }
+
+        .kss-icon {
+          color: $cyan-tech;
+          transform: translateY(-2px);
+          text-shadow: 0 0 8px rgba(0, 184, 255, 0.8);
+        }
+
+        span {
+          text-shadow: 0 0 8px rgba(0, 184, 255, 0.6);
+        }
+      }
+
+      &.active:not(.center-logo-btn) {
+        position: relative;
+
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 4px;
+          width: 14px;
+          height: 2px;
+          background: $cyan-tech;
+          border-radius: 2px;
+          box-shadow: 0 0 8px $cyan-tech;
+        }
+      }
+    }
+
+    /* CONTENEDOR CENTRAL (CUMPLE LA MUESCA INTERNA SIN INTERSECCIONES) */
+    .center-logo-btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 90px;
+      height: 100%;
+
+      /* CAPA 1: ARCO NEÓN INTERNO CONEXIÓN CONTINUA */
+      &::before {
+        content: '';
+        position: absolute;
+        top: -30px; 
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background: $bg-main;
+        border: 1px solid $border-neon;
+        z-index: 1;
+        box-shadow: 0 4px 14px rgba(0, 184, 255, 0.28);
+        clip-path: inset(30px 0 0 0); /* Mantiene sólo la curva inferior dentro de la barra */
+      }
+
+      /* CAPA 2: CÍRCULO FLOTANTE Y PEGASO LIBRES DE LÍNEAS */
+      .logo-wrapper {
+        position: absolute;
+        top: 15px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 66px;
+        height: 66px;
+        border-radius: 50%;
+        background: transparent;
+        border: 2px solid transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+        transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+
+        .pegasus-icon {
+          width: 42px;
+          height: 42px;
+          object-fit: contain;
+          filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(0, 184, 255, 0.85));
+          transition: transform 0.28s ease, filter 0.28s ease;
+        }
+      }
+
+      /* ACTIVACIÓN EN HOVER */
+      &:hover, &:active {
+        .logo-wrapper {
+          border-color: $cyan-tech;
+          background: rgba(10, 16, 34, 0.95);
+          box-shadow: 
+            0 0 20px rgba(0, 184, 255, 0.9),
+            inset 0 0 12px rgba(0, 184, 255, 0.45);
+          transform: translate(-50%, -50%) scale(1.05);
+
+          .pegasus-icon {
+            filter: brightness(0) invert(1) drop-shadow(0 0 14px rgba(0, 184, 255, 1));
+            transform: scale(1.08);
+          }
+        }
+      }
+    }
+  }
+}

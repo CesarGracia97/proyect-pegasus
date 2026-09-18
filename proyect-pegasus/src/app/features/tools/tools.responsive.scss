@@ -1,0 +1,109 @@
+/* --- DISEÑO RESPONSIVO PARA PANTALLAS VERTICALES Y MÓVILES --- */
+@media (max-width: 992px), (orientation: portrait) and (max-height: 900px) {
+  
+  .combat-zone {
+    flex-direction: column !important;
+    overflow-y: auto !important;
+    
+    /* Ocultar barras de desplazamiento feas (Chrome, Safari, Edge) */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    /* Ocultar barras de desplazamiento (Firefox) */
+    scrollbar-width: none;
+
+    padding: 10px !important;
+    height: auto !important;
+    max-height: none !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    gap: 15px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+
+    &.has-selection {
+      flex-direction: column !important;
+      justify-content: flex-start !important;
+    }
+  }
+
+  /* La ruleta se escala y posiciona de forma segura arriba */
+  .center-emblem {
+    width: 100% !important;
+    min-width: unset !important;
+    max-width: 100% !important;
+    margin-top: 5px;
+
+    .has-selection & {
+      animation: none !important;
+      transform: translateY(0) scale(0.88) !important;
+    }
+
+    &.is-returning {
+      animation: none !important;
+    }
+
+    .emblem-title {
+      min-height: auto !important;
+      margin-bottom: 10px !important;
+      padding: 0 10px;
+
+      h2 {
+        white-space: normal !important;
+        font-size: clamp(0.95rem, 4vw, 1.2rem) !important;
+      }
+    }
+
+    .magic-circle {
+      width: 240px !important;
+      height: 240px !important;
+      --circle-radius: 95px !important;
+    }
+  }
+
+  /* Panel de conversión totalmente adaptable y sin desbordes */
+  .conversion-panel {
+    width: 94% !important;
+    max-width: 380px !important;
+    min-width: unset !important;
+    height: auto !important;
+    min-height: 420px;
+    max-height: none !important;
+    margin: 0 auto 25px auto !important;
+    box-sizing: border-box !important;
+    
+    animation: fadeInPanelVertical 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards !important;
+
+    &.is-closing {
+      animation: fadeOutPanelVertical 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards !important;
+    }
+
+    .panel-body {
+      padding: 15px !important;
+      overflow-y: visible !important;
+      
+      /* Ocultar también el scroll interno si llegara a aparecer */
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      scrollbar-width: none;
+
+      h2, h3 {
+        font-size: 0.95rem !important;
+        white-space: normal !important;
+        word-break: break-word;
+      }
+    }
+  }
+}
+
+/* Animaciones verticales optimizadas */
+@keyframes fadeInPanelVertical {
+  0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes fadeOutPanelVertical {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(20px) scale(0.95); }
+}

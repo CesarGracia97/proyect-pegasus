@@ -1,1 +1,95 @@
-<p>shirt-brands works!</p>
+<div class="merch-container">
+  <!-- Visor 3D -->
+  <div class="viewer-section">
+    <div class="viewer-header">
+      <h2>Visualizador 3D de Merchandising</h2>
+      <p>Gira con el mouse/dedo para ver el producto en 360°</p>
+    </div>
+
+    <div class="canvas-wrapper">
+      <canvas #rendererCanvas></canvas>
+    </div>
+  </div>
+
+  <!-- Panel de Personalización Area7 -->
+  <div class="config-panel">
+    <h3>Configurador Area7</h3>
+
+    <!-- Selector de Molde 3D -->
+    <div class="control-group">
+      <label>Seleccionar Producto</label>
+      <select 
+        [(ngModel)]="selectedModelId" 
+        (ngModelChange)="loadSelectedModel()" 
+        class="moba-select">
+        <option *ngFor="let model of availableModels" [value]="model.id">
+          {{ model.name }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Color del producto -->
+    <div class="control-group">
+      <label>Color del Producto</label>
+      <div class="color-picker-wrapper">
+        <input 
+          type="color" 
+          [(ngModel)]="shirtColor" 
+          (ngModelChange)="onColorChange($event)"
+          class="color-input" />
+        <span class="color-hex">{{ shirtColor }}</span>
+      </div>
+    </div>
+
+    <!-- Cargar Imagen -->
+    <div class="control-group">
+      <label>Subir tu Logo / Estampa</label>
+      <div class="upload-box">
+        <input type="file" (change)="onFileUpload($event)" accept="image/*" id="logoInput" hidden />
+        <label for="logoInput" class="upload-btn">
+          📁 Elegir Imagen (PNG/JPG)
+        </label>
+      </div>
+    </div>
+
+    <!-- Vista previa del archivo subido -->
+    <div class="preview-box" *ngIf="logoPreviewUrl">
+      <span>Estampa Activa:</span>
+      <img [src]="logoPreviewUrl" alt="Logo preview" />
+    </div>
+
+    <!-- Deslizadores de Posición y Tamaño -->
+    <div class="control-group" *ngIf="logoPreviewUrl">
+      <label>Tamaño de Sublimación</label>
+      <input 
+        type="range" 
+        min="0.1" 
+        max="0.8" 
+        step="0.05" 
+        [(ngModel)]="logoScale" 
+        (ngModelChange)="updateLogoMesh()" />
+
+      <label>Posición Vertical</label>
+      <input 
+        type="range" 
+        min="-0.3" 
+        max="0.4" 
+        step="0.02" 
+        [(ngModel)]="logoPosY" 
+        (ngModelChange)="updateLogoMesh()" />
+
+      <label>Posición Horizontal</label>
+      <input 
+        type="range" 
+        min="-0.3" 
+        max="0.3" 
+        step="0.02" 
+        [(ngModel)]="logoPosX" 
+        (ngModelChange)="updateLogoMesh()" />
+    </div>
+
+    <button class="action-btn" (click)="saveFrontMockup()">
+        Guardar y Descargar Muestra
+    </button>
+  </div>
+</div>

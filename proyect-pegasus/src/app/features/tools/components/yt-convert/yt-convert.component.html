@@ -1,0 +1,66 @@
+<div class="converter-card">
+  <div class="card-header">
+    <svg class="icon-video" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"></path>
+      <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor"></polygon>
+    </svg>
+    <h2>Convertidor de YouTube</h2>
+  </div>
+
+  <!-- Selección de Formato / Modo -->
+  <div class="format-selector-group">
+    <label for="ytFormatSelect" class="selector-label">1. Selecciona el formato de salida:</label>
+    <div class="select-wrapper">
+      <select
+        id="ytFormatSelect"
+        class="format-select"
+        [(ngModel)]="selectedFormat"
+        [disabled]="isLoading"
+      >
+        <option value="" disabled selected>--- Selecciona un formato ---</option>
+        @for (fmt of formats; track fmt.value) {
+          <option [value]="fmt.value">{{ fmt.label }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <!-- Ingreso de Enlace YouTube -->
+  <div class="format-selector-group">
+    <label for="ytUrlInput" class="selector-label">2. Ingresa el enlace de YouTube:</label>
+    <input
+      id="ytUrlInput"
+      type="text"
+      class="format-select"
+      [(ngModel)]="youtubeUrl"
+      placeholder="https://www.youtube.com/watch?v=..."
+      [disabled]="isLoading"
+    />
+  </div>
+
+  @if (errorMessage) {
+    <div class="alert alert-error">
+      <span>⚠️ {{ errorMessage }}</span>
+    </div>
+  }
+
+  @if (successMessage) {
+    <div class="alert alert-success">
+      <span>✅ ¡Proceso completado! La descarga inició automáticamente.</span>
+    </div>
+  }
+
+  <button
+    type="button"
+    class="btn-submit"
+    [disabled]="!selectedFormat || !youtubeUrl || isLoading"
+    (click)="convertYouTube()"
+  >
+    @if (isLoading) {
+      <span class="spinner"></span>
+      <span>Procesando enlace de YouTube...</span>
+    } @else {
+      <span>Procesar y Descargar</span>
+    }
+  </button>
+</div>

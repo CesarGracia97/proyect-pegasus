@@ -1,4 +1,11 @@
 /* src/styles.scss */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Orbitron:wght@500;700;900&display=swap');
+
+body {
+  background-color: #020817; /* --bg-main */
+  color: #EAF8FF; /* --blue-100 */
+  font-family: 'Inter', sans-serif;
+}
 
 /* 1. Elimina márgenes e inyecciones blancas del navegador */
 html, body {
@@ -19,4 +26,13 @@ html, body {
 app-root {
   display: block;
   min-height: 100vh;
+}
+
+/* Transición global para el cambio de vistas */
+::view-transition-old(root) {
+  animation: pegasus-page-out 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+::view-transition-new(root) {
+  animation: pegasus-page-in 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }

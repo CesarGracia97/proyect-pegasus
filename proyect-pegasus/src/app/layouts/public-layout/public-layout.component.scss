@@ -1,35 +1,54 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@800&family=Orbitron:wght@700&display=swap');
 
-/* Contenedor principal */
+// --- PALETA DE COLORES PROJECT PEGASUS ---
+$bg-main: #050816;         
+$bg-panel: #0a1022;        
+$blue-electric: #008cff;   
+$cyan-tech: #00b8ff;       
+$text-primary: #f2f5f9;    
+$text-secondary: #9ca8b8;  
+$border-neon: rgba(0, 184, 255, 0.25);
+$accent-red: #c1121f;      
+
+@keyframes blink-colon {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
 .public-layout {
   min-height: 100vh;
-  background-color: #121212;
-  color: #ffffff;
+  background-color: $bg-main;
+  color: $text-primary;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
   flex-direction: column;
 }
 
-/* Header Navbar */
+/* Ocultar barra móvil por defecto en Escritorio / Computadoras */
+.bottom-nav-mobile {
+  display: none;
+}
+
 .top-navbar {
   display: flex;
   align-items: center;
-  height: 90px;
-  border-bottom: 1px solid #333;
+  height: 65px;
+  background: rgba(10, 16, 34, 0.6);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid $border-neon;
   padding: 0 2rem;
   gap: 1.5rem;
   position: relative;
   z-index: 1000;
   
-  /* Zona Título y Logo (Rojo y Azul) */
   .brand-zone {
     display: flex;
     align-items: center;
-    gap: 1.2rem;
+    gap: 0.75rem;
 
     .logo-space {
-      width: 55px; /* Tamaño adaptado para coincidir con el h1 de 2rem */
-      height: 55px;
+      width: 38px;
+      height: 38px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -38,25 +57,34 @@
         width: 100%;
         height: 100%;
         object-fit: contain;
-        filter: brightness(0) invert(1); /* Transforma el color nativo a blanco 100% */
+        filter: brightness(0) invert(1) drop-shadow(0 0 6px rgba(0, 184, 255, 0.6));
       }
     }
 
     .project-title {
-      color: #de8d00;
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: 0.5px;
       margin: 0;
-      font-size: 2rem;
+      color: $text-primary;
       white-space: nowrap;
+
+      span {
+        background: linear-gradient(135deg, $cyan-tech 0%, $blue-electric 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 20px rgba(0, 184, 255, 0.4);
+      }
     }
   }
 
-  /* Espacio de difuminación (Rojo estrecho) */
   .blur-space {
-    width: 30px;
+    width: 20px;
     height: 100%;
   }
 
-  /* Zona del Carrusel / Enlaces (Amarillo) */
   .nav-carousel-zone {
     flex: 1; 
     display: flex;
@@ -82,153 +110,172 @@
 
     .nav-links {
       display: flex;
-      gap: 3rem;
+      gap: 2.5rem;
       list-style: none;
       margin: 0;
       padding: 0 1.5rem; 
 
       a {
-        color: #aaa;
+        color: $text-secondary;
         text-decoration: none;
-        transition: color 0.3s ease, text-shadow 0.3s ease;
+        transition: all 0.3s ease;
         white-space: nowrap;
-        font-size: 1.05rem;
+        font-size: 0.95rem;
+        font-weight: 500;
 
-        &:hover {
-          color: #fff;
-          text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+        &:hover, &.active {
+          color: $cyan-tech;
+          text-shadow: 0 0 12px rgba(0, 184, 255, 0.8);
         }
       }
     }
   }
 
-  /* Animación base para el bucle infinito */
   @keyframes scroll-left {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); } 
   }
 
-  /* Zona Reloj (Naranja) */
   .info-zone {
     display: flex;
     align-items: center;
-    padding-left: 1rem;
+    padding-left: 0.75rem;
     position: relative;
 
-    .clock-space {
+    .clock-interactive-container {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      padding: 0.35rem 0.8rem;
-      border-radius: 8px;
-      background: rgba(18, 18, 18, 0.8);
-      border: 1px solid rgba(192, 56, 255, 0.25);
-      cursor: pointer;
       position: relative;
 
-      /* Mini ilustración al lado de la hora */
+      .time-box {
+        background: transparent;
+        border: none;
+        padding: 0.2rem 0.3rem;
+        box-shadow: none;
+
+        .digital-time {
+          color: $cyan-tech;
+          font-family: 'Orbitron', monospace;
+          font-size: 1.05rem;
+          font-weight: 700;
+          letter-spacing: 1.5px;
+          text-shadow: 0 0 10px rgba(0, 184, 255, 0.8);
+
+          .blink-colon {
+            animation: blink-colon 1s infinite;
+            display: inline-block;
+          }
+        }
+      }
+
       .clock-illustration {
-        width: 42px;
-        height: 28px;
+        position: relative;
+        width: 80px;
+        height: 40px;
+        padding: 3px;
+        background: rgba(6, 12, 24, 0.9);
+        border-radius: 4px;
         display: flex;
         align-items: center;
         justify-content: center;
-        overflow: hidden;
-        border-radius: 4px;
+        cursor: pointer;
+
+        background-image: 
+          linear-gradient(to right, $cyan-tech 2px, transparent 2px),
+          linear-gradient(to bottom, $cyan-tech 2px, transparent 2px),
+          linear-gradient(to left, $cyan-tech 2px, transparent 2px),
+          linear-gradient(to bottom, $cyan-tech 2px, transparent 2px),
+          linear-gradient(to right, $cyan-tech 2px, transparent 2px),
+          linear-gradient(to top, $cyan-tech 2px, transparent 2px),
+          linear-gradient(to left, $cyan-tech 2px, transparent 2px),
+          linear-gradient(to top, $cyan-tech 2px, transparent 2px);
+        background-repeat: no-repeat;
+        background-size: 7px 7px;
+        background-position: top left, top left, top right, top right, bottom left, bottom left, bottom right, bottom right;
+        box-shadow: 0 0 12px rgba(0, 184, 255, 0.2);
 
         .pixel-anim {
           width: 100%;
           height: 100%;
           object-fit: cover;
+          border-radius: 2px;
           image-rendering: pixelated;
         }
-      }
 
-      /* Hora digital estilo LED */
-      .digital-time {
-        color: #c038ff;
-        font-family: 'Orbitron', 'Courier New', monospace;
-        font-size: 1.1rem;
-        font-weight: 700;
-        letter-spacing: 2px;
-        text-shadow: 0 0 6px rgba(192, 56, 255, 0.8), 
-                     0 0 12px rgba(192, 56, 255, 0.4);
-      }
-
-      /* --- VENTANA FLOTANTE DE PREVISUALIZACIÓN --- */
-      .clock-preview-card {
-        position: absolute;
-        top: calc(100% + 12px);
-        right: 0;
-        width: 230px;
-        background: #18181b;
-        border: 1px solid rgba(192, 56, 255, 0.3);
-        border-radius: 10px;
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
-        padding: 12px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        
-        /* Oculto inicialmente */
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(-8px);
-        transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
-        z-index: 1100;
-
-        /* GIF Arriba en la ventana flotante */
-        .preview-illustration {
-          width: 100%;
-          height: 120px;
+        .clock-preview-card {
+          position: absolute;
+          top: calc(100% + 10px);
+          right: 0;
+          width: 230px;
+          background: #0a1022;
+          border: 1px solid $border-neon;
+          border-radius: 10px;
+          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.85), 0 0 15px rgba(0, 184, 255, 0.2);
+          padding: 12px;
           display: flex;
-          align-items: center;
-          justify-content: center;
-          overflow: hidden;
-          border-radius: 6px;
-          background: #111;
-          border: 1px solid rgba(255, 255, 255, 0.08);
+          flex-direction: column;
+          gap: 10px;
+          opacity: 0;
+          visibility: hidden;
+          transform: translateY(-8px);
+          transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+          z-index: 1100;
 
-          .pixel-anim {
+          .preview-illustration {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            image-rendering: pixelated;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 6px;
+            background: #050816;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+
+            .pixel-anim {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              image-rendering: pixelated;
+            }
+          }
+
+          .preview-footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 6px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+            .preview-time-text {
+              color: $cyan-tech;
+              font-family: 'Orbitron', monospace;
+              font-size: 1.05rem;
+              font-weight: 700;
+              letter-spacing: 1.5px;
+              text-shadow: 0 0 8px rgba(0, 184, 255, 0.8);
+
+              .blink-colon {
+                animation: blink-colon 1s infinite;
+                display: inline-block;
+              }
+            }
           }
         }
 
-        /* Hora Abajo en la ventana flotante */
-        .preview-footer {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding-top: 6px;
-          border-top: 1px solid rgba(255, 255, 255, 0.08);
-
-          .preview-time-text {
-            color: #c038ff;
-            font-family: 'Orbitron', 'Courier New', monospace;
-            font-size: 1.05rem;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-shadow: 0 0 6px rgba(192, 56, 255, 0.8), 
-                         0 0 12px rgba(192, 56, 255, 0.4);
-          }
+        &:hover .clock-preview-card {
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(0);
         }
-      }
-
-      /* Efecto al pasar el puntero: se despliega la ventana flotante */
-      &:hover .clock-preview-card {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
       }
     }
   }
 }
 
-/* Área Central / Body (Fucsia) */
 .main-body {
   flex: 1;
-  padding: 2rem;
+  padding: 1.5rem;
+  background: radial-gradient(circle at 50% 0%, rgba(0, 140, 255, 0.08) 0%, transparent 60%);
 }
