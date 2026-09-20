@@ -1,15 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
-import { RouterOutlet, Router } from '@angular/router';
+import { Component, signal, OnInit } from '@angular/core';
+import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { 
   LucideAngularModule, 
   RefreshCw, 
   Star, 
   LayoutGrid, 
-  User, 
   Box, 
+  Gamepad2,
   LucideIconData, 
-  Home,
+  Home
 } from 'lucide-angular';
 
 interface MenuItem {
@@ -27,22 +28,33 @@ interface MenuItem {
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss'
 })
-export class MainLayoutComponent {
-  activeMenu = signal('Convertidores');
+export class MainLayoutComponent implements OnInit {
+  activeMenu = signal('');
   isExpanded = signal(false);
 
   menuItems: MenuItem[] = [
     { name: 'Inicio', route: '/', icon: Home },
     { name: 'Convertidores', route: '/herramientas', icon: RefreshCw },
     { name: 'Área R7', route: '/shirt-brands', icon: Star },
-    { name: 'K-SS Engine', route: '/engine', customText: 'K➔SS' },
+    { name: 'K-SS Engine', route: '/kssengine', customText: 'K➔SS' },
     { name: 'Proyectos', route: '/proyectos', icon: LayoutGrid },
-    { name: 'Sobre mí', route: '/sobre-mi', icon: User },
+    { name: 'SdX', route: '/sdx', svgPath: 'assets/img/Logo-SdX.svg' },
     { name: 'SandBox', route: '/sandbox', icon: Box },
     { name: 'Doom', route: '/doom',  svgPath: 'assets/img/Doom.svg' }
   ];
+  constructor(private router: Router) {
+    // Escucha los cambios de ruta para mantener siempre encendido el icono correcto
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      this.syncActiveMenuWithUrl(event.urlAfterRedirects || event.url);
+    });
+  }
 
-  constructor(private router: Router) {}
+  ngOnInit(): void {
+    // Sincroniza el menú activo al cargar o refrescar la página
+    this.syncActiveMenuWithUrl(this.router.url);
+  }
 
   onItemClick(item: MenuItem): void {
     if (!this.isExpanded()) {
@@ -56,5 +68,18 @@ export class MainLayoutComponent {
 
   toggleSidebar(): void {
     this.isExpanded.update(value => !value);
+  }
+
+  private syncActiveMenuWithUrl(currentUrl: string): void {
+    const foundItem = this.menuItems.find(item => {
+      if (item.route === '/') {
+        return currentUrl === '/';
+      }
+      return currentUrl.startsWith(item.route);
+    });
+
+    if (foundItem) {
+      this.activeMenu.set(foundItem.name);
+    }
   }
 }

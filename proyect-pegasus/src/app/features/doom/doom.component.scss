@@ -1,3 +1,4 @@
+// Variables
 $primary-dark: #0a101d;
 $gold-border: #d4af37;
 $active-cyan: #00d2ff;
@@ -9,17 +10,185 @@ $text-light: #c5d3e8;
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 20px;
+  height: 100vh; /* Se adapta a toda la altura disponible de la ventana */
+  margin: 0;
+  padding: 0;    /* Se elimina el padding para que no queden márgenes oscuros pequeños */
   box-sizing: border-box;
+  position: relative; /* Referencia estricta para el modal absolute */
 
-  h2 {
-    color: #fff;
-    font-size: 1.8rem;
-    margin-bottom: 25px;
-    text-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+  /* Modal Bloqueante a pantalla completa en la vista activa */
+  .doom-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 8, 15, 0.95);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .doom-modal-card {
+      background: rgba(15, 23, 42, 0.95);
+      border: 2px solid rgba(212, 175, 55, 0.4);
+      box-shadow: 0 0 35px rgba(255, 0, 0, 0.3);
+      border-radius: 12px;
+      padding: 30px;
+      width: 440px;
+      max-width: 90%;
+      text-align: center;
+      color: #fff;
+
+      .modal-header {
+        .lock-icon {
+          font-size: 2.2rem;
+        }
+
+        h3 {
+          margin: 10px 0 5px 0;
+          font-size: 1.4rem;
+          color: #ff3333;
+          letter-spacing: 2px;
+          text-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+        }
+
+        p {
+          font-size: 0.85rem;
+          color: $text-light;
+          margin-bottom: 20px;
+        }
+      }
+
+      .modal-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+
+        button {
+          flex: 1;
+          padding: 8px;
+          font-size: 0.8rem;
+          font-weight: bold;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: $text-light;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &.active {
+            background: rgba(0, 210, 255, 0.15);
+            border-color: $active-cyan;
+            color: $active-cyan;
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
+          }
+        }
+      }
+
+      .tab-content {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+
+        input {
+          width: 100%;
+          padding: 12px;
+          border-radius: 6px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          background: rgba(0, 0, 0, 0.5);
+          color: #fff;
+          font-size: 0.95rem;
+          text-align: center;
+          box-sizing: border-box;
+
+          &:focus {
+            outline: none;
+            border-color: $active-cyan;
+          }
+
+          &.input-error {
+            border-color: #ff3333;
+          }
+        }
+
+        .btn-verify {
+          width: 100%;
+          padding: 10px;
+          background: linear-gradient(135deg, #d4af37 0%, #aa820a 100%);
+          border: none;
+          font-weight: bold;
+          color: #000;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &:hover {
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
+          }
+        }
+
+        .konami-hint {
+          font-size: 0.8rem;
+          color: $text-light;
+          margin: 0;
+        }
+
+        .display-box {
+          min-height: 50px;
+          background: rgba(0, 0, 0, 0.6);
+          border: 2px dashed rgba(0, 210, 255, 0.4);
+          border-radius: 6px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          padding: 8px;
+          flex-wrap: wrap;
+          transition: all 0.3s ease;
+
+          .placeholder-text {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+          }
+
+          .key-badge {
+            background: $active-cyan;
+            color: #000;
+            font-weight: bold;
+            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            box-shadow: 0 0 6px rgba(0, 210, 255, 0.6);
+          }
+
+          &.box-error {
+            background: rgba(200, 20, 20, 0.25);
+            border: 2px solid #ff3333;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+
+            .error-text {
+              color: #ff4444;
+              font-weight: bold;
+              font-size: 0.9rem;
+              letter-spacing: 1px;
+            }
+          }
+        }
+
+        .msg-error {
+          color: #ff4444;
+          font-size: 0.8rem;
+          margin: 0;
+        }
+      }
+    }
   }
 
-  /* Pantalla de Inicio (Sin cuadro contenedor) */
+  /* Pantalla de Inicio (Splash) */
   .doom-splash {
     display: flex;
     flex-direction: column;
@@ -34,7 +203,6 @@ $text-light: #c5d3e8;
     .splash-logo {
       width: 320px;
       height: auto;
-      /* Sombra y resplandor rojo multinivel para el logo */
       filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.8)) 
               drop-shadow(0 0 35px rgba(200, 0, 0, 0.5));
       transition: filter 0.3s ease, transform 0.3s ease;
@@ -68,7 +236,7 @@ $text-light: #c5d3e8;
     }
   }
 
-  /* Contenedor del Juego */
+  /* Contenedor del Juego (DOS) */
   .dos-wrapper {
     display: flex;
     flex-direction: column;
@@ -88,45 +256,51 @@ $text-light: #c5d3e8;
       }
     }
 
-    canvas {
+    .canvas-holder {
+      position: relative;
       width: 640px;
       height: 400px;
-      background-color: #000;
-      border: 2px solid #333;
-      box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
-      outline: none;
-      cursor: crosshair;
 
-      image-rendering: pixelated;
-      transform: translateZ(0);
-      will-change: transform;
+      canvas {
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        border: 2px solid #333;
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        outline: none;
+        cursor: crosshair;
+
+        image-rendering: pixelated;
+        transform: translateZ(0);
+        will-change: transform;
+      }
     }
 
     .btn-cerrar {
-    margin-top: 5px;
-    background: rgba(180, 20, 20, 0.2);
-    color: #ff5555;
-    font-weight: bold;
-    font-size: 0.9rem;
-    padding: 10px 24px;
-    border: 1px solid rgba(255, 60, 60, 0.5);
-    border-radius: 6px;
-    cursor: pointer;
-    letter-spacing: 1px;
-    transition: all 0.25s ease;
-    backdrop-filter: blur(4px);
+      margin-top: 5px;
+      background: rgba(180, 20, 20, 0.2);
+      color: #ff5555;
+      font-weight: bold;
+      font-size: 0.9rem;
+      padding: 10px 24px;
+      border: 1px solid rgba(255, 60, 60, 0.5);
+      border-radius: 6px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(4px);
 
-    &:hover {
-      background: rgba(220, 20, 20, 0.85);
-      color: #fff;
-      border-color: #ff0000;
-      box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
-      transform: translateY(-2px);
-    }
+      &:hover {
+        background: rgba(220, 20, 20, 0.85);
+        color: #fff;
+        border-color: #ff0000;
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+        transform: translateY(-2px);
+      }
 
-    &:active {
-      transform: translateY(0);
+      &:active {
+        transform: translateY(0);
+      }
     }
-  }
   }
 }
