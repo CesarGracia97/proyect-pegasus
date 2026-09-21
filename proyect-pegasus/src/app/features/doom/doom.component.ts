@@ -37,6 +37,15 @@ export class DoomComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef
   ) {}
 
+  // Getters para exponer las propiedades esperadas por la plantilla HTML
+  get konamiError(): boolean {
+    return this.konamiState.esError;
+  }
+
+  get teclasIngresadas(): string[] {
+    return this.konamiState.teclasIngresadas;
+  }
+
   ngOnInit(): void {
     this.bloqueado = true;
     localStorage.removeItem('pegasus_doom_unlocked');
