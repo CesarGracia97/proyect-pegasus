@@ -27,7 +27,8 @@ export type ActiveTool = 'audio' | 'video' | 'images' | 'youtube' | 'documents' 
     YtConvertComponent
   ],
   templateUrl: './tools.component.html',
-  styleUrls: ['./tools.component.scss', './tools.responsive.scss']
+  styleUrls: ['./tools.component.scss']
+  //styleUrls: ['./tools.component.scss', './tools.responsive.scss']
 })
 export class ToolsComponent {
   activeTool = signal<ActiveTool>(null);

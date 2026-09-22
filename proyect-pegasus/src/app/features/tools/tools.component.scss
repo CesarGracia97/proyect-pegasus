@@ -1,3 +1,17 @@
+/* --- MIXINS Y VARIABLES LOCALES --- */
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin hide-scrollbar {
+  &::-webkit-scrollbar { display: none; }
+  scrollbar-width: none;
+}
+
+$node-polygon: polygon(50% 0%, 85% 15%, 100% 50%, 85% 85%, 50% 100%, 15% 85%, 0% 50%, 15% 15%);
+
 :host {
   /* Paleta proporcionada */
   --bg-main: #020817;
@@ -21,7 +35,7 @@
   --font-body: 'Inter', sans-serif;
 }
 
-/* ZONA CENTRAL E INFERIOR */
+/* --- ZONA CENTRAL E INFERIOR --- */
 .combat-zone {
   display: flex;
   flex: 1;
@@ -39,20 +53,15 @@
   }
 }
 
-/* Círculo Mágico Central y Ruleta Orbital */
+/* --- RULETA ORBITAL --- */
 .center-emblem {
-  display: flex;
+  @include flex-center;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   position: relative;
-  
-  /* Ancho estricto e inamovible para congelar la posición horizontal */
   width: 440px;
   min-width: 440px;
   max-width: 440px;
   flex-shrink: 0;
-
   transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
   
   .has-selection & {
@@ -64,35 +73,25 @@
   }
   
   .emblem-title {
+    @include flex-center;
+    flex-direction: column;
     text-align: center;
     margin-bottom: 25px;
     width: 100%;
-    
-    /* Reserva de altura vertical fija para que saltos de línea no bajen la ruleta */
     min-height: 68px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     
     h2 { 
       margin: 0; 
-      /* Ajuste de fuente fluido para adaptarse a textos largos */
       font-size: clamp(1.1rem, 2vw, 1.6rem); 
       font-family: var(--font-heading);
       color: var(--blue-100); 
       text-transform: uppercase;
       letter-spacing: 1px;
       text-shadow: 0 0 10px rgba(0, 184, 255, 0.25), 0 0 20px rgba(0, 184, 255, 0.15); 
-      
       width: 100%;
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis; /* Evita que el texto rompa el contenedor */
-      
-      @media (max-width: 480px) {
-        font-size: clamp(0.9rem, 4vw, 1.2rem);
-      }
+      text-overflow: ellipsis;
     }
 
     p { 
@@ -105,22 +104,13 @@
   }
 
   .magic-circle {
+    @include flex-center;
     position: relative;
     width: 300px;
     height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
     animation: bubbleBurst 0.8s ease-out backwards;
     --circle-radius: 130px;
 
-    @media (max-width: 480px) {
-      width: 240px;
-      height: 240px;
-      --circle-radius: 100px;
-    }
-    
     .orbit {
       position: absolute;
       inset: 0;
@@ -148,91 +138,72 @@
       }
     }
     
-  .circle-core {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    background: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 5;
+    .circle-core {
+      @include flex-center;
+      position: relative;
+      width: 100px;
+      height: 100px;
+      background: transparent;
+      z-index: 5;
 
-    /* Círculo delgado alrededor del ícono */
-    &::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      border: 1px solid rgba(0, 184, 255, 0.35);
-      box-shadow: inset 0 0 8px rgba(0, 184, 255, 0.1), 0 0 10px rgba(0, 184, 255, 0.15);
-      pointer-events: none;
-      transition: all 0.3s ease;
-    }
-
-    /* Puntos cardinales refinados */
-    &::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      pointer-events: none;
-      background-image: 
-        radial-gradient(circle 1.5px at 50% 0px, var(--primary) 100%, transparent 100%),   /* Norte */
-        radial-gradient(circle 1.5px at 50% 100%, var(--primary) 100%, transparent 100%), /* Sur */
-        radial-gradient(circle 1.5px at 0px 50%, var(--primary) 100%, transparent 100%),  /* Oeste */
-        radial-gradient(circle 1.5px at 100% 50%, var(--primary) 100%, transparent 100%); /* Este */
-      filter: drop-shadow(0 0 2px var(--primary));
-      transition: filter 0.3s ease;
-    }
-
-    /* Brillo reactivo al seleccionar un módulo */
-    .has-selection & {
       &::before {
-        border-color: rgba(0, 184, 255, 0.65);
-        box-shadow: inset 0 0 10px rgba(0, 184, 255, 0.25), 0 0 15px rgba(0, 184, 255, 0.35);
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        border: 1px solid rgba(0, 184, 255, 0.35);
+        box-shadow: inset 0 0 8px rgba(0, 184, 255, 0.1), 0 0 10px rgba(0, 184, 255, 0.15);
+        pointer-events: none;
+        transition: all 0.3s ease;
       }
-      
+
       &::after {
-        filter: drop-shadow(0 0 4px var(--primary-hover));
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        pointer-events: none;
+        background-image: 
+          radial-gradient(circle 1.5px at 50% 0px, var(--primary) 100%, transparent 100%),
+          radial-gradient(circle 1.5px at 50% 100%, var(--primary) 100%, transparent 100%),
+          radial-gradient(circle 1.5px at 0px 50%, var(--primary) 100%, transparent 100%),
+          radial-gradient(circle 1.5px at 100% 50%, var(--primary) 100%, transparent 100%);
+        filter: drop-shadow(0 0 2px var(--primary));
+        transition: filter 0.3s ease;
       }
-    }
 
-    /* Contenedor e ícono estricta y matemáticamente centrados */
-    .core-icon { 
-      color: var(--primary);
-      filter: drop-shadow(0 0 10px rgba(0, 184, 255, 0.5));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-      line-height: 0; /* Elimina la línea de base tipográfica */
-
-      lucide-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 44px;
-        height: 44px;
-
-        /* Centrado estricto del SVG interno generado por Lucide */
-        ::ng-deep svg,
-        svg {
-          display: block;
-          width: 100%;
-          height: 100%;
+      .has-selection & {
+        &::before {
+          border-color: rgba(0, 184, 255, 0.65);
+          box-shadow: inset 0 0 10px rgba(0, 184, 255, 0.25), 0 0 15px rgba(0, 184, 255, 0.35);
+        }
+        
+        &::after {
+          filter: drop-shadow(0 0 4px var(--primary-hover));
         }
       }
 
-      @media (max-width: 480px) {
+      .core-icon { 
+        @include flex-center;
+        color: var(--primary);
+        filter: drop-shadow(0 0 10px rgba(0, 184, 255, 0.5));
+        width: 100%;
+        height: 100%;
+        line-height: 0;
+
         lucide-icon {
-          width: 34px;
-          height: 34px;
+          @include flex-center;
+          width: 44px;
+          height: 44px;
+
+          ::ng-deep svg, svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+          }
         }
       }
     }
-  }
 
     .roulette-nodes {
       position: absolute;
@@ -243,6 +214,7 @@
     }
 
     .emblem-node {
+      @include flex-center;
       position: absolute;
       top: 50%;
       left: 50%;
@@ -250,15 +222,9 @@
       height: 56px;
       margin-top: -28px;
       margin-left: -28px;
-      
-      border-radius: 0;
-      clip-path: polygon(50% 0%, 85% 15%, 100% 50%, 85% 85%, 50% 100%, 15% 85%, 0% 50%, 15% 15%);
-      
+      clip-path: $node-polygon;
       background: var(--bg-card);
       border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       cursor: pointer;
       box-shadow: 0 5px 15px rgba(0,0,0,0.6);
 
@@ -268,17 +234,15 @@
       transition: background 0.3s, transform 0.3s;
 
       .node-icon {
+        @include flex-center;
         color: var(--blue-200);
         z-index: 2;
-        display: flex;
-        align-items: center;
-        justify-content: center;
       }
 
       .node-ring {
         position: absolute;
         inset: -2px;
-        clip-path: polygon(50% 0%, 85% 15%, 100% 50%, 85% 85%, 50% 100%, 15% 85%, 0% 50%, 15% 15%);
+        clip-path: $node-polygon;
         border: 2px solid transparent;
         transition: all 0.3s;
       }
@@ -306,19 +270,14 @@
   }
 }
 
-
-/* PANEL DE CONVERSIÓN */
+/* --- PANEL DE CONVERSIÓN --- */
 .conversion-panel {
-  /* Ancho estricto e inamovible */
   width: 440px;
   min-width: 440px;
   max-width: 440px;
-  flex-shrink: 0; /* Impide que flexbox lo encoja */
-  
-  /* Altura fija para evitar saltos verticales al cambiar de subcomponente */
+  flex-shrink: 0;
   height: 520px;
   max-height: 80vh;
-  
   background: var(--bg-panel);
   border: 1px solid rgba(0, 184, 255, 0.2);
   border-radius: 12px;
@@ -335,12 +294,11 @@
   }
 
   .panel-header {
+    @include flex-center;
+    justify-content: space-between;
     padding: 14px 18px;
     background: var(--bg-secondary);
     border-bottom: 1px solid rgba(0, 184, 255, 0.15);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     flex-shrink: 0;
     
     h3 { 
@@ -355,15 +313,13 @@
     }
 
     .close-panel-btn {
+      @include flex-center;
       width: 30px;
       height: 30px;
       border-radius: 6px;
       background: rgba(0, 184, 255, 0.05);
       border: 1px solid transparent;
       color: var(--blue-200);
-      display: flex;
-      align-items: center;
-      justify-content: center;
       cursor: pointer;
       transition: all 0.3s ease;
       outline: none;
@@ -388,8 +344,8 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* <--- CENTRA LOS HIJOS HORIZONTALMENTE */
-    text-align: center;   /* <--- CENTRA LOS TEXTOS GENERALES */
+    align-items: center;
+    text-align: center;
     gap: 15px;
     overflow-y: auto; 
     overflow-x: hidden; 
@@ -398,7 +354,7 @@
     .dropdown-group {
       display: flex;
       flex-direction: column;
-      align-items: center; /* <--- Centra el grupo por si se usa */
+      align-items: center;
       gap: 6px;
       width: 100%;
       
@@ -439,14 +395,14 @@
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      align-items: center; /* <--- ASEGURA EL CENTRADO DE LOS SUBCOMPONENTES */
+      align-items: center;
       text-align: center;
       gap: 12px;
     }
   }
 }
 
-/* ANIMACIONES MANTENIDAS */
+/* --- ANIMACIONES KEYFRAMES --- */
 @keyframes bubbleBurst {
   0% { opacity: 0; transform: scale(0); }
   50% { opacity: 1; transform: scale(1.15); }
@@ -485,3 +441,101 @@
   100% { transform: rotate(var(--angle)) translate(var(--circle-radius)) rotate(calc(var(--angle) * -1 - 360deg)); }
 }
 
+@keyframes fadeInPanelVertical {
+  0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes fadeOutPanelVertical {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(20px) scale(0.95); }
+}
+
+/* ==========================================================================
+   DISEÑO RESPONSIVO 
+   ========================================================================== */
+@media (max-width: 992px), (orientation: portrait) and (max-height: 900px) {
+  
+  .combat-zone {
+    flex-direction: column;
+    overflow-y: auto;
+    @include hide-scrollbar;
+    padding: 10px;
+    height: auto;
+    max-height: none;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+
+    &.has-selection {
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+  }
+
+  .center-emblem {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    margin-top: 5px;
+
+    .has-selection & {
+      animation: none;
+      transform: translateY(0) scale(0.88);
+    }
+
+    &.is-returning {
+      animation: none;
+    }
+
+    .emblem-title {
+      min-height: auto;
+      margin-bottom: 10px;
+      padding: 0 10px;
+
+      h2 {
+        white-space: normal;
+        font-size: clamp(0.95rem, 4vw, 1.2rem);
+      }
+    }
+
+    .magic-circle {
+      width: 240px;
+      height: 240px;
+      --circle-radius: 95px;
+
+      .circle-core lucide-icon {
+        width: 34px;
+        height: 34px;
+      }
+    }
+  }
+
+  .conversion-panel {
+    width: 94%;
+    max-width: 380px;
+    min-width: 0;
+    height: auto;
+    min-height: 420px;
+    max-height: none;
+    margin: 0 auto 25px auto;
+    animation: fadeInPanelVertical 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+
+    &.is-closing {
+      animation: fadeOutPanelVertical 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    .panel-body {
+      padding: 15px;
+      overflow-y: visible;
+      @include hide-scrollbar;
+
+      h2, h3 {
+        font-size: 0.95rem;
+        white-space: normal;
+        word-break: break-word;
+      }
+    }
+  }
+}

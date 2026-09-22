@@ -1,36 +1,38 @@
-// Variables
-$primary-dark: #0a101d;
-$gold-border: #d4af37;
-$active-cyan: #00d2ff;
-$text-light: #c5d3e8;
-
-.doom-container {
+@mixin flex-center {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100vh; /* Se adapta a toda la altura disponible de la ventana */
-  margin: 0;
-  padding: 0;    /* Se elimina el padding para que no queden márgenes oscuros pequeños */
-  box-sizing: border-box;
-  position: relative; /* Referencia estricta para el modal absolute */
+}
 
-  /* Modal Bloqueante a pantalla completa en la vista activa */
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  --gold-border: #d4af37;
+  --active-cyan: #00d2ff;
+  --text-light: #c5d3e8;
+  --error-red: #ff3333;
+}
+
+.doom-container {
+  @include flex-center;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  position: relative; /* Referencia estricta para el modal absoluto */
+
+  /* Modal Bloqueo */
   .doom-modal-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: rgba(5, 8, 15, 0.95);
     backdrop-filter: blur(8px);
     z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center;
 
     .doom-modal-card {
       background: rgba(15, 23, 42, 0.95);
@@ -42,6 +44,7 @@ $text-light: #c5d3e8;
       max-width: 90%;
       text-align: center;
       color: #fff;
+      box-sizing: border-box;
 
       .modal-header {
         .lock-icon {
@@ -49,16 +52,16 @@ $text-light: #c5d3e8;
         }
 
         h3 {
-          margin: 10px 0 5px 0;
+          margin: 10px 0 5px;
           font-size: 1.4rem;
-          color: #ff3333;
+          color: var(--error-red);
           letter-spacing: 2px;
           text-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
         }
 
         p {
           font-size: 0.85rem;
-          color: $text-light;
+          color: var(--text-light);
           margin-bottom: 20px;
         }
       }
@@ -75,15 +78,15 @@ $text-light: #c5d3e8;
           font-weight: bold;
           background: rgba(255, 255, 255, 0.05);
           border: 1px solid rgba(255, 255, 255, 0.2);
-          color: $text-light;
+          color: var(--text-light);
           border-radius: 6px;
           cursor: pointer;
           transition: all 0.2s ease;
 
           &.active {
             background: rgba(0, 210, 255, 0.15);
-            border-color: $active-cyan;
-            color: $active-cyan;
+            border-color: var(--active-cyan);
+            color: var(--active-cyan);
             box-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
           }
         }
@@ -107,24 +110,24 @@ $text-light: #c5d3e8;
 
           &:focus {
             outline: none;
-            border-color: $active-cyan;
+            border-color: var(--active-cyan);
           }
 
           &.input-error {
-            border-color: #ff3333;
+            border-color: var(--error-red);
           }
         }
 
         .btn-verify {
           width: 100%;
           padding: 10px;
-          background: linear-gradient(135deg, #d4af37 0%, #aa820a 100%);
+          background: linear-gradient(135deg, var(--gold-border) 0%, #aa820a 100%);
           border: none;
           font-weight: bold;
           color: #000;
           border-radius: 6px;
           cursor: pointer;
-          transition: all 0.2s ease;
+          transition: box-shadow 0.2s ease;
 
           &:hover {
             box-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
@@ -133,18 +136,16 @@ $text-light: #c5d3e8;
 
         .konami-hint {
           font-size: 0.8rem;
-          color: $text-light;
+          color: var(--text-light);
           margin: 0;
         }
 
         .display-box {
+          @include flex-center;
           min-height: 50px;
           background: rgba(0, 0, 0, 0.6);
           border: 2px dashed rgba(0, 210, 255, 0.4);
           border-radius: 6px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
           gap: 6px;
           padding: 8px;
           flex-wrap: wrap;
@@ -156,7 +157,7 @@ $text-light: #c5d3e8;
           }
 
           .key-badge {
-            background: $active-cyan;
+            background: var(--active-cyan);
             color: #000;
             font-weight: bold;
             font-size: 0.8rem;
@@ -167,7 +168,7 @@ $text-light: #c5d3e8;
 
           &.box-error {
             background: rgba(200, 20, 20, 0.25);
-            border: 2px solid #ff3333;
+            border: 2px solid var(--error-red);
             box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
 
             .error-text {
@@ -188,15 +189,10 @@ $text-light: #c5d3e8;
     }
   }
 
-  /* Pantalla de Inicio (Splash) */
+  /* Pantalla de Inicio*/
   .doom-splash {
-    display: flex;
+    @include flex-center;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    box-shadow: none;
     padding: 20px;
     gap: 35px;
 
@@ -209,13 +205,13 @@ $text-light: #c5d3e8;
 
       &:hover {
         transform: scale(1.02);
-        filter: drop-shadow(0 0 25px rgba(255, 0, 0, 1)) 
+        filter: drop-shadow(0 0 25px #ff0000) 
                 drop-shadow(0 0 50px rgba(255, 0, 0, 0.7));
       }
     }
 
     .btn-jugar {
-      background: linear-gradient(135deg, #d4af37 0%, #aa820a 100%);
+      background: linear-gradient(135deg, var(--gold-border) 0%, #aa820a 100%);
       color: #000;
       font-weight: bold;
       font-size: 1.2rem;
@@ -229,7 +225,7 @@ $text-light: #c5d3e8;
 
       &:hover {
         transform: scale(1.05);
-        background: linear-gradient(135deg, #00d2ff 0%, #0088cc 100%);
+        background: linear-gradient(135deg, var(--active-cyan) 0%, #0088cc 100%);
         color: #fff;
         box-shadow: 0 0 20px rgba(0, 210, 255, 0.7);
       }
@@ -238,21 +234,20 @@ $text-light: #c5d3e8;
 
   /* Contenedor del Juego (DOS) */
   .dos-wrapper {
-    display: flex;
+    @include flex-center;
     flex-direction: column;
-    align-items: center;
     gap: 12px;
 
     .controls-hint {
       font-size: 0.85rem;
-      color: $text-light;
+      color: var(--text-light);
       background: rgba(10, 16, 29, 0.7);
       padding: 6px 18px;
       border-radius: 20px;
       border: 1px solid rgba(0, 210, 255, 0.2);
 
       strong {
-        color: $active-cyan;
+        color: var(--active-cyan);
       }
     }
 
@@ -269,7 +264,6 @@ $text-light: #c5d3e8;
         box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
         outline: none;
         cursor: crosshair;
-
         image-rendering: pixelated;
         transform: translateZ(0);
         will-change: transform;

@@ -6,10 +6,8 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
   standalone: true,
   imports: [RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './public-layout.component.html',
-  styleUrls: [
-    './public-layout.component.scss', 
-    './public-layout.responsive.scss'
-  ]
+  styleUrls: ['./public-layout.component.scss']
+  // styleUrls: ['./public-layout.component.scss', './public-layout.responsive.scss']
 })
 export class PublicLayoutComponent implements OnInit, OnDestroy {
   private now = signal(new Date());
