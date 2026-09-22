@@ -12,7 +12,18 @@ jobs:
       - name: Descargar código
         uses: actions/checkout@v4
 
-      - name: Configurar QEMU (Soporte ARM64 para teléfonos)
+      - name: Configurar Node.js (Compilación nativa rápida)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Compilar Angular nativamente
+        run: |
+          cd proyect-pegasus
+          npm ci
+          npm run build -- --configuration production
+
+      - name: Configurar QEMU (Soporte ARM64)
         uses: docker/setup-qemu-action@v3
 
       - name: Configurar Docker Buildx
@@ -41,7 +52,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: cesargracia97/pegasus-frontend:v1
-          
+
       - name: Compilar y publicar Reverse Proxy (Multi-arch)
         uses: docker/build-push-action@v5
         with:
