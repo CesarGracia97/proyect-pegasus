@@ -1,4 +1,4 @@
-/* --- CONTENEDOR HOST DE ANGULAR --- */
+/* --- CONTENEDOR HOST --- */
 :host {
   display: block;
   width: 100%;
@@ -11,7 +11,6 @@
   }
 }
 
-/* --- TARJETA PRINCIPAL --- */
 .converter-card {
   width: 100% !important;
   max-width: 100% !important;
@@ -24,7 +23,6 @@
   flex-direction: column;
 }
 
-/* --- CABECERA --- */
 .card-header {
   display: flex;
   align-items: center;
@@ -39,34 +37,20 @@
     font-weight: 600;
     color: #00b8ff;
     margin: 0 !important;
-    padding: 0 !important;
-    white-space: normal !important;
-    word-break: break-word !important;
     flex: 1;
   }
 }
 
-/* --- ICONO --- */
 .icon-video {
   width: 18px !important;
   height: 18px !important;
-  min-width: 18px;
-  min-height: 18px;
   stroke: #00b8ff;
   flex-shrink: 0;
-
-  svg {
-    width: 100% !important;
-    height: 100% !important;
-    display: block;
-  }
 }
 
-/* --- SELECTOR Y CAMPOS DE ENTRADA --- */
 .format-selector-group {
   width: 100% !important;
   margin: 0 0 0.6rem 0 !important;
-  padding: 0 !important;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -76,40 +60,30 @@
   font-size: 0.75rem;
   font-weight: 600;
   color: #a0aec0;
-  margin: 0 !important;
 }
 
 .format-select {
   width: 100% !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-  padding: 0.45rem 2rem 0.45rem 0.7rem;
+  padding: 0.45rem 0.7rem;
   background-color: rgba(10, 16, 29, 0.8);
   color: #fff;
   border: 1px solid rgba(0, 184, 255, 0.3);
   border-radius: 6px;
   font-size: 0.8rem;
   outline: none;
-  cursor: pointer;
 
   option {
     background-color: #0a101d;
     color: #fff;
   }
-
-  &::placeholder {
-    color: #718096;
-  }
 }
 
-/* --- ALERTAS --- */
 .alert {
   width: 100% !important;
   padding: 0.5rem;
   border-radius: 6px;
   font-size: 0.75rem;
   margin-top: 0.4rem;
-  box-sizing: border-box;
 }
 
 .alert-error {
@@ -124,10 +98,8 @@
   color: #00ff96;
 }
 
-/* --- BOTÓN DE ENVÍO --- */
 .btn-submit {
   width: 100% !important;
-  max-width: 100% !important;
   margin: 0.6rem 0 0 0 !important;
   padding: 0.55rem !important;
   border-radius: 6px;
@@ -140,11 +112,63 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
 
   &:disabled {
     background: #1a202c;
     color: #4a5568;
     cursor: not-allowed;
+  }
+}
+
+/* --- ESTILOS PARA LA ANIMACIÓN COMBINADA (MEGAMAN X + LOADING) --- */
+.loading-animation-container {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background-color: rgba(10, 16, 29, 0.7);
+  border: 1px dashed rgba(0, 184, 255, 0.4);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+
+  /* Contenedor más compacto y centrado */
+  .gif-stack {
+    position: relative;
+    width: 70px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Estilo del GIF de fondo (Loading reducido a 60px) */
+    .bg-loading-gif {
+      position: absolute;
+      width: 55px;
+      height: 55px;
+      object-fit: contain;
+      opacity: 0.8; 
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .fg-x-run-gif {
+      position: absolute;
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      z-index: 2;
+      pointer-events: none;
+    }
+  }
+
+  .loading-label {
+    font-size: 0.65rem;
+    color: #00b8ff;
+    text-align: center;
+    font-weight: 600;
+    letter-spacing: 0.3px;
   }
 }

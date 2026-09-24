@@ -7,7 +7,7 @@
     <h2>Convertidor de YouTube</h2>
   </div>
 
-  <!-- Selección de Formato / Modo -->
+  <!-- Selección de Formato -->
   <div class="format-selector-group">
     <label for="ytFormatSelect" class="selector-label">1. Selecciona el formato de salida:</label>
     <div class="select-wrapper">
@@ -40,7 +40,7 @@
 
   @if (errorMessage) {
     <div class="alert alert-error">
-      <span>⚠️ {{ errorMessage }}</span>
+      <span>{{ errorMessage }}</span>
     </div>
   }
 
@@ -50,17 +50,23 @@
     </div>
   }
 
+  <!-- Botón de Envío -->
   <button
     type="button"
     class="btn-submit"
     [disabled]="!selectedFormat || !youtubeUrl || isLoading"
     (click)="convertYouTube()"
   >
-    @if (isLoading) {
-      <span class="spinner"></span>
-      <span>Procesando enlace de YouTube...</span>
-    } @else {
-      <span>Procesar y Descargar</span>
-    }
+    <span>Procesar y Descargar</span>
   </button>
+
+  @if (isLoading) {
+    <div class="loading-animation-container">
+      <div class="gif-stack">
+        <img src="assets/img/animations/loading_gifs/loading.gif" alt="Cargando fondo" class="bg-loading-gif" />
+        <img src="assets/img/animations/loading_gifs/x_run.gif" alt="Megaman X corriendo" class="fg-x-run-gif" />
+      </div>
+      <span class="loading-label">Limpiando enlace y procesando contenido...</span>
+    </div>
+  }
 </div>

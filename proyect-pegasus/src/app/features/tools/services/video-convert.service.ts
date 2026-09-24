@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -9,14 +9,14 @@ export type VideoTargetFormat = 'mp4' | 'gif' | 'mp3';
 })
 export class VideoConverterService {
   
-  // private baseUrl = `http://${window.location.hostname}:3000`;
-  // private apiUrl = `${this.baseUrl}/video/convert`
-  private apiUrl = '/api/v1/media/video/convert';
+
+  private readonly apiUrl = isDevMode()
+    ? `http://${window.location.hostname}:3000/api/v1/media/video/convert`
+    : '/api/v1/media/video/convert';
 
   constructor(private http: HttpClient) {}
 
   /**
-   * Envía un lote de archivos de video al backend para su conversión y empaquetado ZIP
    * @param files Lista de archivos File seleccionados
    * @param targetType Formato de destino ('mp4' | 'gif' | 'mp3')
    */
