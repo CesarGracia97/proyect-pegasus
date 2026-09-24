@@ -40,3 +40,16 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+#Archivos
+*-watch.html
+*-base.js
+node_modules
+dist
+yt-dlp.exe
+ffmpeg.exe
+*.html
+*.js
+.git
+.gitignore
+README.md

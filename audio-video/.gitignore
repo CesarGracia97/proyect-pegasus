@@ -54,3 +54,14 @@ pids
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+#archivos
+node_modules
+dist
+yt-dlp.exe
+ffmpeg.exe
+*.html
+*.js
+.git
+.gitignore
+README.md
