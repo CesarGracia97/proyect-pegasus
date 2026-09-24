@@ -1,0 +1,101 @@
+<section class="combat-zone" [class.has-selection]="activeTool() !== null">
+  
+  <!-- Círculo Central -->
+  <div class="center-emblem" [class.is-returning]="isClosing">
+    <div class="emblem-title">
+      <h2>
+        @switch (activeTool()) {
+          @case ('audio') { Conv. de Audio }
+          @case ('video') { Conv. de Video }
+          @case ('images') { Conv. de Imágenes }
+          @case ('youtube') { Conv. de Videos de Youtube }
+          @case ('documents') { Conv. de Documentos }
+          @case ('data') { Conv. de Datos }
+          @default { Selecciona un Módulo }
+        }
+      </h2>
+      <p>{{ activeTool() === null ? 'Haz clic en una opción de la ruleta para comenzar' : 'Configura los parámetros de conversión' }}</p>
+    </div>
+
+    <div class="magic-circle">
+      <div class="orbit orbit-bg"></div>
+      <div class="orbit orbit-1"></div>
+      <div class="orbit orbit-2"></div>
+      
+      <!-- Ícono central -->
+      <div class="circle-core">
+        <span class="core-icon">
+          @switch (activeTool()) {
+            @case ('audio') { <lucide-icon [img]="icons.audio" [size]="40"></lucide-icon> }
+            @case ('video') { <lucide-icon [img]="icons.video" [size]="40"></lucide-icon> }
+            @case ('images') { <lucide-icon [img]="icons.images" [size]="40"></lucide-icon> }
+            @case ('youtube') { <lucide-icon [img]="icons.youtube" [size]="40"></lucide-icon> }
+            @case ('documents') { <lucide-icon [img]="icons.documents" [size]="40"></lucide-icon> }
+            @case ('data') { <lucide-icon [img]="icons.data" [size]="40"></lucide-icon> }
+            @default { <lucide-icon [img]="icons.default" [size]="40"></lucide-icon> }
+          }
+        </span>
+      </div>
+
+      <!-- Nodos de la Ruleta -->
+      <div class="roulette-nodes">
+        <div *ngFor="let t of toolsList; let i = index" 
+            class="emblem-node"
+            [class.active]="activeTool() === t.id"
+            (click)="setTool(t.id)"
+            [style.--node-index]="i">
+          <div class="node-icon">
+            <lucide-icon [img]="t.icon" [size]="22"></lucide-icon>
+          </div>
+          <div class="node-ring"></div> 
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- PANEL DE CONVERSIÓN -->
+  @if (activeTool() !== null) {
+    <div class="conversion-panel" [class.is-closing]="isClosing">
+      <div class="panel-header">
+        <h3>Conversión</h3>
+        <button class="close-panel-btn" (click)="closePanel()" title="Cerrar">
+          <span>×</span>
+        </button>
+      </div>
+
+      <div class="panel-body">
+        <div class="dropdown-group">
+        </div>
+
+        <div class="subcomponent-container">
+          @switch (activeTool()) {
+            @case ('audio') {
+              <app-audio-convert />
+            }
+            @case ('video') {
+              <app-video-convert />
+            }
+            @case ('youtube') {
+              <app-yt-convert />
+            }
+            @case ('images') {
+              <div class="placeholder-message">
+                <p>⚙️ Módulo de Imágenes en desarrollo...</p>
+              </div>
+            }
+            @case ('documents') {
+              <div class="placeholder-message">
+                <p>⚙️ Módulo de Documentos en desarrollo...</p>
+              </div>
+            }
+            @case ('data') {
+              <div class="placeholder-message">
+                <p>⚙️ Módulo de Datos en desarrollo...</p>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+  }
+</section>

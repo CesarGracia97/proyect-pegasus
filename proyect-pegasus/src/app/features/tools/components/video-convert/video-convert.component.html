@@ -1,0 +1,141 @@
+<div class="converter-card">
+  <div class="card-header">
+    <svg class="icon-video" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polygon points="23 7 16 12 23 17 23 7"></polygon>
+      <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+    </svg>
+    <h2>Convertidor de Video</h2>
+  </div>
+
+  <!-- Selección Formato Origen -->
+  <div class="format-selector-group">
+    <label for="videoSourceSelect" class="selector-label">1. Selecciona el formato de origen:</label>
+    <div class="select-wrapper">
+      <select
+        id="videoSourceSelect"
+        class="format-select"
+        [(ngModel)]="selectedSourceFormat"
+        (change)="onSourceFormatChange()"
+        [disabled]="isLoading"
+      >
+        <option value="" disabled selected>--- Selecciona un formato de origen ---</option>
+        @for (fmt of sourceFormats; track fmt.extension) {
+          <option [value]="fmt.extension">{{ fmt.label }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <!-- Selección Formato Destino -->
+  <div class="format-selector-group">
+    <label for="videoTargetSelect" class="selector-label">2. Selecciona el formato de salida:</label>
+    <div class="select-wrapper">
+      <select
+        id="videoTargetSelect"
+        class="format-select"
+        [(ngModel)]="targetFormat"
+        [disabled]="isLoading"
+      >
+        @for (opt of targetOptions; track opt.value) {
+          <option [value]="opt.value">{{ opt.label }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <!-- Dropzone Bloqueable -->
+  <div
+    class="dropzone"
+    [class.disabled]="isLoading || !selectedSourceFormat"
+    (dragover)="onDragOver($event)"
+    (drop)="onDrop($event)"
+    (click)="triggerFileInput(fileInput)"
+  >
+    <input
+      #fileInput
+      type="file"
+      multiple
+      [accept]="currentAccept"
+      [disabled]="!selectedSourceFormat || isLoading"
+      (change)="onFileSelected($event)"
+      class="hidden-input"
+    />
+
+    <div class="dropzone-content">
+      <div class="upload-icon-wrapper">
+        <svg class="icon-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17 8 12 3 7 8"></polyline>
+          <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
+      </div>
+
+      @if (!selectedSourceFormat) {
+        <p class="dropzone-text lock-text">🔒 Primero selecciona un formato de origen para habilitar la carga</p>
+      } @else {
+        <p class="dropzone-text">Haga clic o arrastre sus archivos de video aquí</p>
+        <p class="dropzone-subtext">
+          Máximo <strong>10 archivos</strong> con extensión <strong>{{ selectedSourceFormat.toUpperCase() }}</strong>
+        </p>
+      }
+    </div>
+  </div>
+
+  @if (errorMessage) {
+    <div class="alert alert-error">
+      <span>⚠️ {{ errorMessage }}</span>
+    </div>
+  }
+
+  @if (successMessage) {
+    <div class="alert alert-success">
+      <span>✅ ¡Proceso completado! La descarga del paquete de videos inició automáticamente.</span>
+    </div>
+  }
+
+  @if (selectedFiles.length > 0) {
+    <div class="file-list-container">
+      <div class="file-list-header">
+        <span>Archivos seleccionados ({{ selectedFiles.length }}/{{ maxFiles }}):</span>
+        <button type="button" class="btn-clear" (click)="clearFiles()" [disabled]="isLoading">
+          Vaciar lista
+        </button>
+      </div>
+
+      <ul class="file-list">
+        @for (file of selectedFiles; track file.name; let i = $index) {
+          <li class="file-item">
+            <div class="file-info">
+              <span class="file-name">🎬 {{ file.name }}</span>
+              <span class="file-size">({{ formatFileSize(file.size) }} MB)</span>
+            </div>
+            @if (!isLoading) {
+              <button
+                type="button"
+                class="btn-delete"
+                (click)="removeFile(i)"
+                title="Eliminar archivo"
+              >
+                ✕
+              </button>
+            }
+          </li>
+        }
+      </ul>
+    </div>
+  }
+
+  <button
+    type="button"
+    class="btn-submit"
+    [disabled]="selectedFiles.length === 0 || isLoading || !selectedSourceFormat"
+    (click)="convertFiles()"
+  >
+    @if (isLoading) {
+      <span class="spinner"></span>
+      <span>Procesando y convirtiendo videos...</span>
+    } @else {
+      <span>Convertir a {{ targetFormat.toUpperCase() }} y Descargar (.ZIP)</span>
+    }
+  </button>
+</div>

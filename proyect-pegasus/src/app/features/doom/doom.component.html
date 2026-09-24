@@ -1,0 +1,81 @@
+<div class="doom-container">
+
+  <!-- Modal Bloqueante de Seguridad -->
+  <div *ngIf="bloqueado" class="doom-modal-overlay">
+    <div class="doom-modal-card">
+      <div class="modal-header">
+        <span class="lock-icon">🔒</span>
+        <h3>ACCESO RESTRINGIDO</h3>
+        <p>Selecciona un método de verificación para desbloquear DOOM</p>
+      </div>
+
+      <!-- Botones de selección de modo -->
+      <div class="modal-tabs">
+        <button 
+          [class.active]="modoModal === 'password'" 
+          (click)="cambiarModo('password')">
+          🔑 CONTRASEÑA
+        </button>
+        <button 
+          [class.active]="modoModal === 'konami'" 
+          (click)="cambiarModo('konami')">
+          🎮 CÓDIGO KONAMI
+        </button>
+      </div>
+
+      <!-- Opción 1: Contraseña -->
+      <div *ngIf="modoModal === 'password'" class="tab-content">
+        <form (ngSubmit)="validarPassword()">
+          <input 
+            type="password" 
+            [(ngModel)]="passwordInput" 
+            name="pwd"
+            placeholder="Ingrese la contraseña secreta..." 
+            [class.input-error]="passwordError"
+            autocomplete="off" />
+          
+          <button type="submit" class="btn-verify">DESBLOQUEAR</button>
+        </form>
+        <p *ngIf="passwordError" class="msg-error">❌ Contraseña Incorrecta</p>
+      </div>
+
+      <!-- Opción 2: Código Konami -->
+      <div *ngIf="modoModal === 'konami'" class="tab-content">
+        <p class="konami-hint">Presiona la combinación en tu teclado:</p>
+        
+        <!-- Caja receptora de teclas -->
+        <div class="display-box" [class.box-error]="konamiError">
+          <ng-container *ngIf="!konamiError">
+            <span *ngFor="let key of teclasIngresadas" class="key-badge">{{ key }}</span>
+            <span *ngIf="teclasIngresadas.length === 0" class="placeholder-text">Esperando teclas...</span>
+          </ng-container>
+
+          <span *ngIf="konamiError" class="error-text">⚠️ ERROR EN CLAVE</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pantalla de Inicio (Splash) -->
+  <div *ngIf="!juegoIniciado" class="doom-splash">
+    <img src="assets/img/Doom.svg" alt="Doom Logo" class="splash-logo" />
+    <button class="btn-jugar" (click)="iniciarJuego()">
+      <span>JUGAR</span>
+    </button>
+  </div>
+
+  <!-- Contenedor del Emulador DOS -->
+  <div *ngIf="juegoIniciado" class="dos-wrapper">
+    <div class="controls-hint">
+      <span>💡 Haz clic sobre el juego para bloquear el mouse. Presiona <strong>ESC</strong> para liberarlo.</span>
+    </div>
+
+    <div class="canvas-holder">
+      <canvas #dosCanvas id="dosCanvas" tabindex="0" (click)="capturarMouse()"></canvas>
+    </div>
+
+    <button class="btn-cerrar" (click)="cerrarJuego()">
+      ✖ CERRAR JUEGO
+    </button>
+  </div>
+</div>

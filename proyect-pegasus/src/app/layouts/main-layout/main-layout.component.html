@@ -1,0 +1,35 @@
+<div class="moba-layout">
+  <!-- BARRA LATERAL -->
+  <aside class="sidebar" [class.expanded]="isExpanded()">
+    
+    <!-- LÍNEA VERTICAL DEL EJE -->
+    <div class="axis-line"></div>
+
+    <!-- MENÚ DE ROMBOS -->
+    <ul class="diamond-menu">
+      <li *ngFor="let item of menuItems" 
+          class="diamond-item" 
+          [class.active]="activeMenu() === item.name"
+          (click)="onItemClick(item)">
+        
+        <!-- CONTENEDOR EN ROMBO -->
+        <div class="diamond-shape">
+          <lucide-icon *ngIf="item.icon" [img]="item.icon" class="icon" [size]="18"></lucide-icon>
+          <span *ngIf="item.customText" class="icon custom-kss">{{ item.customText }}</span>
+          <img *ngIf="item.svgPath" [src]="item.svgPath" [alt]="item.name" class="icon custom-svg-icon" />
+        </div>
+
+        <!-- ETIQUETA DE TEXTO -->
+        <span class="label-text">{{ item.name }}</span>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- TELÓN TRANSPARENTE -->
+  <div class="backdrop" *ngIf="isExpanded()" (click)="toggleSidebar()"></div>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
