@@ -44,6 +44,15 @@ jobs:
           push: true
           tags: cesargracia97/ps-audvid-backend:v1
 
+      - name: Compilar y publicar API Convertidora de Documentos (Multi-arch)
+        uses: docker/build-push-action@v5
+        with:
+          context: ./documents
+          file: ./documents/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: cesargracia97/ps-doc-backend:v1
+
       - name: Compilar y publicar Frontend (Multi-arch)
         uses: docker/build-push-action@v5
         with:
