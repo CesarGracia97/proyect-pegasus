@@ -35,38 +35,54 @@ jobs:
           username: cesargracia97
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Compilar y publicar Backend (Multi-arch)
-        uses: docker/build-push-action@v5
+      - name: Compilar y publicar Backend Audio/Video (Multi-arch)
+        uses: docker/build-push-action@v6
         with:
           context: ./audio-video
           file: ./audio-video/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: cesargracia97/ps-audvid-backend:v1
+          tags: |
+            cesargracia97/ps-audvid-backend:v1
+            cesargracia97/ps-audvid-backend:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Compilar y publicar API Convertidora de Documentos (Multi-arch)
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./documents
           file: ./documents/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: cesargracia97/ps-doc-backend:v1
+          tags: |
+            cesargracia97/ps-doc-backend:v1
+            cesargracia97/ps-doc-backend:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Compilar y publicar Frontend (Multi-arch)
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./proyect-pegasus
           file: ./proyect-pegasus/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: cesargracia97/pegasus-frontend:v1
+          tags: |
+            cesargracia97/pegasus-frontend:v1
+            cesargracia97/pegasus-frontend:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Compilar y publicar Reverse Proxy (Multi-arch)
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./nginx-proxy
           file: ./nginx-proxy/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: cesargracia97/ps-reverse-proxy:v1
+          tags: |
+            cesargracia97/ps-reverse-proxy:v1
+            cesargracia97/ps-reverse-proxy:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
