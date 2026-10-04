@@ -1,0 +1,133 @@
+# ==========================================
+# 1. ARCHIVOS DEL SISTEMA OPERATIVO
+# ==========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ==========================================
+# 2. ENTORNOS DE DESARROLLO E IDES
+# ==========================================
+# Visual Studio Code (Mantiene configuraciones compartidas de equipo)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/
+
+# JetBrains (WebStorm, PyCharm, PhpStorm, IntelliJ)
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Otros editores
+.project
+.classpath
+.c9/
+.settings/
+*.sublime-workspace
+*.swp
+*.swo
+
+# ==========================================
+# 3. VARIABLES DE ENTORNO Y SECRETOS
+# ==========================================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+
+# ==========================================
+# 4. FRONTEND (Angular / Node.js)
+# ==========================================
+node_modules/
+/dist
+/tmp
+/out-tsc
+/bazel-out
+/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+npm-debug.log*
+yarn-error.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# ==========================================
+# 5. BACKEND PYTHON (FastAPI - Documents / Data)
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ==========================================
+# 6. BACKEND NODE.JS / NESTJS (Audio-Video)
+# ==========================================
+# Compilados de NestJS
+/build
+/dist
+
+# Logs del servidor
+logs/
+*.log
+
+# ==========================================
+# 7. BINARIOS Y HERRAMIENTAS CLI EXTERNAS
+# ==========================================
+# Ejecutables aislados (FFmpeg, yt-dlp, etc.)
+*.exe
+*.dll
+*.so
+*.dylib
+ffmpeg
+ffmpeg.exe
+yt-dlp
+yt-dlp.exe
+audio-video/ffmpeg.exe
+audio-video/yt-dlp.exe
+
+# ==========================================
+# 8. BASES DE DATOS LOCALES Y TEMPORALES
+# ==========================================
+*.sqlite
+*.sqlite3
+*.db
+
+# ==========================================
+# 9. REGLAS ESPECÍFICAS PARA ARCHIVOS TEMPORALES
+# (¡CUIDADO! Acotados estrictamente para NO afectar a Angular)
+# ==========================================
+# Archivos temporales específicos generados por descargas/scrapers en audio-video
+audio-video/*-watch.html
+audio-video/*-base.js
+*-watch.html
+*-base.js
+
+# Directorios de procesamiento de archivos temporales
+/tmp/
+/temp/
+/uploads/
+/converted/

@@ -1,37 +1,25 @@
-# app/core/matrix.py
-
+# Lista blanca de extensiones soportadas y sus destinos permitidos
 CONVERSION_MATRIX = {
-    # -------------------------------------------------------------
-    # 1. Documentos de texto y marcado (Motor: Pandoc)
-    # -------------------------------------------------------------
     ".docx": {
         "targets": [".pdf", ".md", ".txt", ".html", ".odt", ".epub"],
-        "engine": "pandoc"
+        "engine": "libreoffice"
     },
     ".md": {
         "targets": [".pdf", ".docx", ".html", ".txt", ".epub"],
-        "engine": "pandoc"
+        "engine": "libreoffice"
     },
     ".odt": {
         "targets": [".pdf", ".docx", ".txt", ".md"],
-        "engine": "pandoc"
+        "engine": "libreoffice"
     },
     ".txt": {
         "targets": [".pdf", ".docx", ".md", ".html"],
-        "engine": "pandoc"
+        "engine": "libreoffice"
     },
-
-    # -------------------------------------------------------------
-    # 2. Documentos visuales / HTML (Motor: WeasyPrint)
-    # -------------------------------------------------------------
     ".html": {
         "targets": [".pdf"],
         "engine": "weasyprint"
     },
-
-    # -------------------------------------------------------------
-    # 3. Tablas y Estructuras de Datos (Motor: Pandas)
-    # -------------------------------------------------------------
     ".csv": {
         "targets": [".xlsx", ".json"],
         "engine": "pandas"
@@ -46,12 +34,17 @@ CONVERSION_MATRIX = {
     }
 }
 
-def get_allowed_targets(extension: str) -> list:
-    """Devuelve la lista de formatos a los que se puede convertir una extensión."""
-    ext = extension.lower() if extension.startswith(".") else f".{extension.lower()}"
-    return CONVERSION_MATRIX.get(ext, {}).get("targets", [])
+def is_extension_allowed(ext: str) -> bool:
+    """Verifica si la extensión está en la lista blanca."""
+    ext_clean = ext.lower() if ext.startswith(".") else f".{ext.lower()}"
+    return ext_clean in CONVERSION_MATRIX
 
-def get_engine_for_conversion(extension: str) -> str:
-    """Devuelve el motor asignado para procesar la extensión de origen."""
-    ext = extension.lower() if extension.startswith(".") else f".{extension.lower()}"
-    return CONVERSION_MATRIX.get(ext, {}).get("engine", None)
+def get_allowed_targets(ext: str) -> list:
+    """Devuelve la lista de formatos a los que se puede convertir."""
+    ext_clean = ext.lower() if ext.startswith(".") else f".{ext.lower()}"
+    return CONVERSION_MATRIX.get(ext_clean, {}).get("targets", [])
+
+def get_engine_for_conversion(ext: str) -> str:
+    """Devuelve el motor asignado para la conversión."""
+    ext_clean = ext.lower() if ext.startswith(".") else f".{ext.lower()}"
+    return CONVERSION_MATRIX.get(ext_clean, {}).get("engine", None)
