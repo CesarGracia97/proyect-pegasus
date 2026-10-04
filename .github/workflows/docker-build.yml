@@ -49,15 +49,13 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Compilar y publicar API Convertidora de Documentos (Multi-arch)
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v5
         with:
           context: ./documents
           file: ./documents/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: |
-            cesargracia97/ps-doc-backend:v1
-            cesargracia97/ps-doc-backend:latest
+          tags: cesargracia97/ps-doc-backend:v1
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
