@@ -1,0 +1,220 @@
+$cyan-glow: #00d2ff;
+$gold-accent: #d4af37;
+$bg-panel: rgba(10, 18, 32, 0.85);
+$border-blue: rgba(0, 210, 255, 0.25);
+
+.converter-box {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 12px;
+  color: #dce7f5;
+  font-family: inherit;
+}
+
+/* DROPZONE */
+.dropzone {
+  border: 2px dashed $border-blue;
+  border-radius: 8px;
+  background: $bg-panel;
+  padding: 24px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+
+  &:hover, &.drag-over {
+    border-color: $cyan-glow;
+    background: rgba(0, 210, 255, 0.08);
+    box-shadow: 0 0 12px rgba(0, 210, 255, 0.25);
+  }
+
+  &.has-file {
+    border-style: solid;
+    padding: 12px;
+  }
+
+  .hidden-file-input {
+    display: none;
+  }
+
+  .drop-icon {
+    font-size: 2.2rem;
+    margin-bottom: 6px;
+  }
+
+  .drop-title {
+    font-size: 0.92rem;
+    margin: 0 0 4px 0;
+    color: #e2e8f0;
+
+    .highlight {
+      color: $cyan-glow;
+      text-decoration: underline;
+    }
+  }
+
+  .drop-subtitle {
+    font-size: 0.72rem;
+    color: #64748b;
+  }
+}
+
+/* ARCHIVO SELECCIONADO */
+.file-info-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+
+  .file-icon { font-size: 1.6rem; }
+
+  .file-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .file-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .file-size {
+      font-size: 0.72rem;
+      color: $cyan-glow;
+    }
+  }
+
+  .btn-remove {
+    background: transparent;
+    border: none;
+    color: #ef4444;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 2px 6px;
+
+    &:hover { color: #f87171; }
+  }
+}
+
+/* SELECTOR DE EXTENSIONES */
+.target-selection-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  .field-label {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #94a3b8;
+  }
+
+  .custom-select {
+    width: 100%;
+    background: #060d19;
+    color: #ffffff;
+    border: 1px solid $border-blue;
+    padding: 10px;
+    border-radius: 6px;
+    outline: none;
+    font-size: 0.9rem;
+
+    &:focus {
+      border-color: $cyan-glow;
+      box-shadow: 0 0 8px rgba(0, 210, 255, 0.3);
+    }
+  }
+
+  .engine-badge {
+    font-size: 0.7rem;
+    color: $gold-accent;
+    text-align: right;
+  }
+}
+
+.loading-whitelist {
+  font-size: 0.8rem;
+  color: $cyan-glow;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ALERTAS */
+.alert {
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+
+  &-danger {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid #ef4444;
+    color: #fca5a5;
+  }
+
+  &-success {
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid #22c55e;
+    color: #86efac;
+  }
+}
+
+/* BOTÓN PROCESAR */
+.action-container {
+  margin-top: 6px;
+
+  .btn-convert {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(180deg, #00d2ff 0%, #0066ff 100%);
+    border: 1px solid #52d7ff;
+    border-radius: 20px;
+    color: #030a16;
+    font-weight: 800;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: 0 0 14px rgba(0, 210, 255, 0.35);
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 0 22px rgba(0, 210, 255, 0.65);
+    }
+
+    &:disabled {
+      background: #172331;
+      border-color: #243447;
+      color: #475569;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .spinner-text {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+  }
+}
+
+/* SPINNER */
+.spinner-sm {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

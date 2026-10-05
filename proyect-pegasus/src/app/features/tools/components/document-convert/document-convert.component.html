@@ -1,1 +1,81 @@
-<p>document-convert works!</p>
+<div class="converter-box">
+
+  <!-- ZONA DE CARGA (DRAG & DROP) -->
+  <div 
+    class="dropzone"
+    [class.drag-over]="isDragOver()"
+    [class.has-file]="selectedFile()"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    (drop)="onDrop($event)"
+    (click)="fileInput.click()">
+
+    <input 
+      #fileInput 
+      type="file" 
+      class="hidden-file-input" 
+      (change)="onFileSelected($event)" />
+
+    <ng-container *ngIf="!selectedFile()">
+      <div class="drop-icon">📄</div>
+      <p class="drop-title">Arrastra tu archivo aquí o <span class="highlight">explora en el equipo</span></p>
+      <span class="drop-subtitle">Soporta: .docx, .odt, .txt, .md, .csv, .xlsx, .json, .html</span>
+    </ng-container>
+
+    <ng-container *ngIf="selectedFile() as file">
+      <div class="file-info-card">
+        <span class="file-icon">📁</span>
+        <div class="file-details">
+          <span class="file-name">{{ file.name }}</span>
+          <span class="file-size">{{ (file.size / 1024).toFixed(1) }} KB</span>
+        </div>
+        <button type="button" class="btn-remove" (click)="$event.stopPropagation(); resetState()" title="Quitar archivo">✕</button>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- SELECTOR DE EXTENSIONES DE LA WHITELIST -->
+  <div class="target-selection-group" *ngIf="selectedFile() && !isLoadingTargets() && allowedTargets().length > 0">
+    <label class="field-label">Convertir a:</label>
+    <div class="select-wrapper">
+      <select 
+        class="custom-select" 
+        [ngModel]="selectedTarget()" 
+        (ngModelChange)="selectedTarget.set($event)">
+        <option *ngFor="let target of allowedTargets()" [value]="target">
+          {{ target.toUpperCase() }}
+        </option>
+      </select>
+    </div>
+    <span class="engine-badge" *ngIf="engineName()">Motor: {{ engineName() }}</span>
+  </div>
+
+  <!-- INDICADOR DE LECTURA WHITELIST -->
+  <div class="loading-whitelist" *ngIf="isLoadingTargets()">
+    <span class="spinner-sm"></span> Consultando formatos permitidos...
+  </div>
+
+  <!-- BANNER DE ERRORES O ÉXITO -->
+  <div class="alert alert-danger" *ngIf="errorMessage()">
+    ⚠ {{ errorMessage() }}
+  </div>
+
+  <div class="alert alert-success" *ngIf="successMessage()">
+    ✔ {{ successMessage() }}
+  </div>
+
+  <!-- BOTÓN PROCESAR -->
+  <div class="action-container">
+    <button 
+      type="button"
+      class="btn-convert" 
+      [disabled]="!selectedFile() || !selectedTarget() || isConverting() || isLoadingTargets()"
+      (click)="executeConversion()">
+      <span *ngIf="!isConverting()">CONVERTIR DOCUMENTO</span>
+      <span *ngIf="isConverting()" class="spinner-text">
+        <span class="spinner-sm"></span> PROCESANDO...
+      </span>
+    </button>
+  </div>
+
+</div>

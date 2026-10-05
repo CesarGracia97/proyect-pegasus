@@ -110,7 +110,6 @@ $border-neon: rgba(0, 184, 255, 0.35);
     max-width: 100%;
     height: 60px;
     
-    /* El gradiente dibuja la línea neón superior excepto entre -45px y +45px del centro */
     background: 
       linear-gradient(
         to right,
@@ -124,13 +123,13 @@ $border-neon: rgba(0, 184, 255, 0.35);
       rgba(10, 16, 34, 0.96);
       
     backdrop-filter: blur(16px);
-    border-top: none; /* Removido para usar el gradiente con apertura central */
+    border-top: none;
     border-radius: 0;
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.85);
     z-index: 2000;
     align-items: center;
     justify-content: space-around;
-    padding: 0 4px;
+    padding: 0 2px;
     overflow: visible;
 
     .nav-item {
@@ -138,18 +137,20 @@ $border-neon: rgba(0, 184, 255, 0.35);
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 3px;
+      gap: 2px;
       color: $text-secondary;
       text-decoration: none;
-      font-size: 0.7rem;
-      font-weight: 500;
       transition: all 0.25s ease;
       flex: 1;
+      min-width: 0; /* Permite que el ítem se reduzca equitativamente en pantallas estrechas */
       height: 100%;
+      text-align: center;
+      padding: 0 1px;
 
       .nav-icon {
-        width: 21px;
-        height: 21px;
+        width: clamp(17px, 4.8vw, 21px);
+        height: clamp(17px, 4.8vw, 21px);
+        flex-shrink: 0;
         transition: transform 0.25s ease, stroke 0.25s ease;
       }
 
@@ -157,14 +158,27 @@ $border-neon: rgba(0, 184, 255, 0.35);
         font-style: italic;
         font-weight: 800;
         font-family: 'Exo 2', 'Segoe UI', sans-serif;
-        font-size: 0.92rem;
+        font-size: clamp(0.75rem, 2.8vw, 0.92rem);
         line-height: 1;
-        height: 21px;
+        height: clamp(17px, 4.8vw, 21px);
         display: flex;
         align-items: center;
         justify-content: center;
         letter-spacing: -0.5px;
         transition: transform 0.25s ease, color 0.25s ease;
+        flex-shrink: 0;
+      }
+
+      span {
+        display: block;
+        width: 100%;
+        text-align: center;
+        font-size: clamp(0.5rem, 2vw, 0.68rem); /* Tipografía fluida que escala con la pantalla */
+        line-height: 1.1;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       &:hover, &.active {
@@ -193,7 +207,9 @@ $border-neon: rgba(0, 184, 255, 0.35);
         &::after {
           content: '';
           position: absolute;
-          bottom: 4px;
+          bottom: 3px;
+          left: 50%;
+          transform: translateX(-50%);
           width: 14px;
           height: 2px;
           background: $cyan-tech;
@@ -209,7 +225,7 @@ $border-neon: rgba(0, 184, 255, 0.35);
       display: flex;
       align-items: center;
       justify-content: center;
-      flex: 0 0 90px;
+      flex: 0 0 80px;
       height: 100%;
 
       /* CAPA 1: ARCO NEÓN INTERNO CONEXIÓN CONTINUA */
@@ -226,7 +242,7 @@ $border-neon: rgba(0, 184, 255, 0.35);
         border: 1px solid $border-neon;
         z-index: 1;
         box-shadow: 0 4px 14px rgba(0, 184, 255, 0.28);
-        clip-path: inset(30px 0 0 0); /* Mantiene sólo la curva inferior dentro de la barra */
+        clip-path: inset(30px 0 0 0);
       }
 
       /* CAPA 2: CÍRCULO FLOTANTE Y PEGASO LIBRES DE LÍNEAS */
