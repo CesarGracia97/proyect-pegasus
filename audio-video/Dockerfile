@@ -1,21 +1,26 @@
-# Imagen base ligera de Node.js
 FROM node:20-slim
 
-# Instalar FFmpeg en la imagen base
-RUN apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*
+# 1. Instalar FFmpeg, Python3, curl y certificados de seguridad
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    python3 \
+    curl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# 2. Descargar la versión oficial más reciente de yt-dlp para Linux y asignarle permisos de ejecución
+RUN curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp \
+    && chmod a+rx /usr/local/bin/yt-dlp
 
 WORKDIR /app
 
-# Copiar paquetes e instalar dependencias
+# 3. Copiar paquetes e instalar dependencias
 COPY package*.json ./
 RUN npm install
 
-# Copiar el código fuente y compilar
 COPY . .
 RUN npm run build
 
-# Exponer el puerto de NestJS
 EXPOSE 3000
 
-# Comando de inicio
 CMD ["node", "dist/main.js"]
