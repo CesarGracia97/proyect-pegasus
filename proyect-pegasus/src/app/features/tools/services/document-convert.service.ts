@@ -12,7 +12,6 @@ export interface AllowedConversionsResponse {
   providedIn: 'root'
 })
 export class DocumentConvertService {
-// Ajustar la URL según el proxy de Nginx o puerto local de FastAPI
   
   private readonly apiUrl = isDevMode()
     ? `http://${window.location.hostname}:8000/documents`

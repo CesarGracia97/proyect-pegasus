@@ -11,13 +11,13 @@ export class VideoConverterService {
   
 
   private readonly apiUrl = isDevMode()
-    ? `http://${window.location.hostname}:3000/api/v1/media/video/convert`
+    ? `http://${window.location.hostname}:3000/video/convert`
     : '/api/v1/media/video/convert';
 
   constructor(private http: HttpClient) {}
 
   /**
-   * @param files Lista de archivos File seleccionados
+   * @param files
    * @param targetType Formato de destino ('mp4' | 'gif' | 'mp3')
    */
   convertVideoToZip(

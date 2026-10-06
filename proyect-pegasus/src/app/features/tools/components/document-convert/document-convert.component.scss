@@ -1,157 +1,234 @@
-$cyan-glow: #00d2ff;
-$gold-accent: #d4af37;
-$bg-panel: rgba(10, 18, 32, 0.85);
-$border-blue: rgba(0, 210, 255, 0.25);
+:host {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
 
-.converter-box {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 12px;
-  color: #dce7f5;
-  font-family: inherit;
+  * {
+    box-sizing: border-box;
+  }
 }
 
-/* DROPZONE */
-.dropzone {
-  border: 2px dashed $border-blue;
-  border-radius: 8px;
-  background: $bg-panel;
-  padding: 24px 16px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.25s ease-in-out;
+.converter-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+}
 
-  &:hover, &.drag-over {
-    border-color: $cyan-glow;
-    background: rgba(0, 210, 255, 0.08);
-    box-shadow: 0 0 12px rgba(0, 210, 255, 0.25);
+/* --- CABECERA SUPERIOR (ANCHO COMPLETO - IGUAL A IMAGEN 2) --- */
+.card-header {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem 1.5rem 0.9rem 1.5rem;
+  margin-bottom: 1.2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  .header-icon {
+    position: absolute;
+    left: 1.5rem;
+    width: 20px;
+    height: 20px;
+    stroke: #00b8ff;
+  }
+
+  .header-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #00b8ff;
+    margin: 0;
+    text-align: center;
+  }
+}
+
+/* --- CUERPO DEL FORMULARIO Y CAMPOS --- */
+.form-body {
+  width: 100%;
+  padding: 0 1.5rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.form-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ETIQUETAS NUMERADAS CENTRADAS */
+.step-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #a0aec0;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+/* BARRA DE ARCHIVO (DROPZONE/INPUT BAR) */
+.input-file-bar {
+  width: 100%;
+  height: 42px;
+  background-color: #071224;
+  border: 1px solid #1a2e4c;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding: 0 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover:not(.disabled) {
+    border-color: #00b8ff;
+    box-shadow: 0 0 10px rgba(0, 184, 255, 0.2);
+  }
+
+  &.drag-over {
+    border-color: #00b8ff;
+    background-color: rgba(0, 184, 255, 0.1);
   }
 
   &.has-file {
-    border-style: solid;
-    padding: 12px;
+    border-color: rgba(0, 184, 255, 0.5);
+    background-color: rgba(0, 184, 255, 0.05);
   }
 
-  .hidden-file-input {
-    display: none;
-  }
-
-  .drop-icon {
-    font-size: 2.2rem;
-    margin-bottom: 6px;
-  }
-
-  .drop-title {
-    font-size: 0.92rem;
-    margin: 0 0 4px 0;
-    color: #e2e8f0;
-
-    .highlight {
-      color: $cyan-glow;
-      text-decoration: underline;
-    }
-  }
-
-  .drop-subtitle {
-    font-size: 0.72rem;
-    color: #64748b;
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
   }
 }
 
-/* ARCHIVO SELECCIONADO */
-.file-info-card {
+.hidden-input {
+  display: none;
+}
+
+.input-content {
+  width: 100%;
   display: flex;
   align-items: center;
-  gap: 10px;
-  text-align: left;
-
-  .file-icon { font-size: 1.6rem; }
-
-  .file-details {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-
-    .file-name {
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: #ffffff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .file-size {
-      font-size: 0.72rem;
-      color: $cyan-glow;
-    }
-  }
-
-  .btn-remove {
-    background: transparent;
-    border: none;
-    color: #ef4444;
-    font-size: 1.1rem;
-    cursor: pointer;
-    padding: 2px 6px;
-
-    &:hover { color: #f87171; }
-  }
+  justify-content: space-between;
+  overflow: hidden;
 }
 
-/* SELECTOR DE EXTENSIONES */
-.target-selection-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-
-  .field-label {
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: #94a3b8;
-  }
-
-  .custom-select {
-    width: 100%;
-    background: #060d19;
-    color: #ffffff;
-    border: 1px solid $border-blue;
-    padding: 10px;
-    border-radius: 6px;
-    outline: none;
-    font-size: 0.9rem;
-
-    &:focus {
-      border-color: $cyan-glow;
-      box-shadow: 0 0 8px rgba(0, 210, 255, 0.3);
-    }
-  }
-
-  .engine-badge {
-    font-size: 0.7rem;
-    color: $gold-accent;
-    text-align: right;
-  }
-}
-
-.loading-whitelist {
+.placeholder-text {
   font-size: 0.8rem;
-  color: $cyan-glow;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  color: #4a5568;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* ALERTAS */
-.alert {
-  padding: 10px;
-  border-radius: 6px;
+.file-name {
   font-size: 0.82rem;
+  color: #eaf8ff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-  &-danger {
+.btn-remove {
+  background: transparent;
+  border: none;
+  color: #ef4444;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0 0 0 0.5rem;
+
+  &:hover {
+    color: #ff6b6b;
+  }
+}
+
+/* SELECTOR DE FORMATOS */
+.select-wrapper {
+  width: 100%;
+}
+
+.custom-select {
+  width: 100%;
+  height: 42px;
+  background-color: #071224;
+  border: 1px solid #1a2e4c;
+  border-radius: 6px;
+  color: #eaf8ff;
+  font-size: 0.85rem;
+  padding: 0 0.8rem;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-align-last: center;
+
+  &:focus,
+  &:hover:not(:disabled) {
+    border-color: #00b8ff;
+    box-shadow: 0 0 10px rgba(0, 184, 255, 0.2);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    color: #4a5568;
+  }
+
+  option {
+    background-color: #071224;
+    color: #eaf8ff;
+    text-align: center;
+  }
+}
+
+/* BOTÓN DE ACCIÓN */
+.btn-action {
+  width: 100%;
+  height: 44px;
+  margin-top: 0.2rem;
+  background-color: #111d35;
+  border: 1px solid #1f3458;
+  border-radius: 6px;
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease-in-out;
+
+  &:not(:disabled) {
+    background-color: rgba(0, 184, 255, 0.15);
+    border-color: #00b8ff;
+    color: #00b8ff;
+    box-shadow: 0 0 12px rgba(0, 184, 255, 0.25);
+
+    &:hover {
+      background-color: rgba(0, 184, 255, 0.25);
+      box-shadow: 0 0 18px rgba(0, 184, 255, 0.4);
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+/* ALERTAS DE ESTADO */
+.alert {
+  width: 100%;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  text-align: center;
+
+  &-error {
     background: rgba(239, 68, 68, 0.15);
     border: 1px solid #ef4444;
     color: #fca5a5;
@@ -164,51 +241,10 @@ $border-blue: rgba(0, 210, 255, 0.25);
   }
 }
 
-/* BOTÓN PROCESAR */
-.action-container {
-  margin-top: 6px;
-
-  .btn-convert {
-    width: 100%;
-    padding: 12px;
-    background: linear-gradient(180deg, #00d2ff 0%, #0066ff 100%);
-    border: 1px solid #52d7ff;
-    border-radius: 20px;
-    color: #030a16;
-    font-weight: 800;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    cursor: pointer;
-    box-shadow: 0 0 14px rgba(0, 210, 255, 0.35);
-    transition: all 0.2s ease;
-
-    &:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 0 22px rgba(0, 210, 255, 0.65);
-    }
-
-    &:disabled {
-      background: #172331;
-      border-color: #243447;
-      color: #475569;
-      box-shadow: none;
-      cursor: not-allowed;
-    }
-
-    .spinner-text {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-  }
-}
-
-/* SPINNER */
-.spinner-sm {
-  width: 14px;
-  height: 14px;
-  display: inline-block;
+/* SPINNER DE CARGA */
+.spinner {
+  width: 15px;
+  height: 15px;
   border: 2px solid currentColor;
   border-top-color: transparent;
   border-radius: 50%;
@@ -216,5 +252,7 @@ $border-blue: rgba(0, 210, 255, 0.25);
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }

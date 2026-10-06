@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 import { AudioConvertComponent } from './components/audio-convert/audio-convert.component';
 import { VideoConvertComponent } from './components/video-convert/video-convert.component';
 import { YtConvertComponent } from './components/yt-convert/yt-convert.component';
+import { DocumentConvertComponent } from './components/document-convert/document-convert.component';
 export type ActiveTool = 'audio' | 'video' | 'images' | 'youtube' | 'documents' | 'data' | null;
 
 @Component({
@@ -24,7 +25,8 @@ export type ActiveTool = 'audio' | 'video' | 'images' | 'youtube' | 'documents' 
     LucideAngularModule,
     AudioConvertComponent,
     VideoConvertComponent,
-    YtConvertComponent
+    YtConvertComponent, 
+    DocumentConvertComponent
   ],
   templateUrl: './tools.component.html',
   styleUrls: ['./tools.component.scss']

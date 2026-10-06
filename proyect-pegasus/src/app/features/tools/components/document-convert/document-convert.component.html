@@ -1,81 +1,99 @@
-<div class="converter-box">
+<div class="converter-card">
+  <!-- Cabecera Superior Ancho Completo -->
+  <div class="card-header">
+    <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="16" y1="13" x2="8" y2="13"></line>
+      <line x1="16" y1="17" x2="8" y2="17"></line>
+      <polyline points="10 9 9 9 8 9"></polyline>
+    </svg>
+    <h2 class="header-title">Convertidor de Documentos</h2>
+  </div>
 
-  <!-- ZONA DE CARGA (DRAG & DROP) -->
-  <div 
-    class="dropzone"
-    [class.drag-over]="isDragOver()"
-    [class.has-file]="selectedFile()"
-    (dragover)="onDragOver($event)"
-    (dragleave)="onDragLeave($event)"
-    (drop)="onDrop($event)"
-    (click)="fileInput.click()">
+  <div class="form-body">
+    <!-- Paso 1: Carga de Archivo -->
+    <div class="form-group">
+      <label class="step-label">1. Selecciona o arrastra el documento:</label>
+      
+      <div
+        class="input-file-bar"
+        [class.has-file]="selectedFile()"
+        [class.drag-over]="isDragOver()"
+        [class.disabled]="isConverting() || isLoadingTargets()"
+        (click)="fileInput.click()"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)"
+      >
+        <input
+          #fileInput
+          type="file"
+          [disabled]="isConverting() || isLoadingTargets()"
+          (change)="onFileSelected($event)"
+          class="hidden-input"
+        />
 
-    <input 
-      #fileInput 
-      type="file" 
-      class="hidden-file-input" 
-      (change)="onFileSelected($event)" />
-
-    <ng-container *ngIf="!selectedFile()">
-      <div class="drop-icon">📄</div>
-      <p class="drop-title">Arrastra tu archivo aquí o <span class="highlight">explora en el equipo</span></p>
-      <span class="drop-subtitle">Soporta: .docx, .odt, .txt, .md, .csv, .xlsx, .json, .html</span>
-    </ng-container>
-
-    <ng-container *ngIf="selectedFile() as file">
-      <div class="file-info-card">
-        <span class="file-icon">📁</span>
-        <div class="file-details">
-          <span class="file-name">{{ file.name }}</span>
-          <span class="file-size">{{ (file.size / 1024).toFixed(1) }} KB</span>
+        <div class="input-content">
+          @if (selectedFile()) {
+            <span class="file-name">📄 {{ selectedFile()?.name }}</span>
+            <button type="button" class="btn-remove" (click)="$event.stopPropagation(); resetState()" title="Quitar archivo">
+              ✕
+            </button>
+          } @else {
+            <span class="placeholder-text">Haz clic o arrastra tu archivo aquí (.docx, .pdf, .txt...)</span>
+          }
         </div>
-        <button type="button" class="btn-remove" (click)="$event.stopPropagation(); resetState()" title="Quitar archivo">✕</button>
       </div>
-    </ng-container>
-  </div>
-
-  <!-- SELECTOR DE EXTENSIONES DE LA WHITELIST -->
-  <div class="target-selection-group" *ngIf="selectedFile() && !isLoadingTargets() && allowedTargets().length > 0">
-    <label class="field-label">Convertir a:</label>
-    <div class="select-wrapper">
-      <select 
-        class="custom-select" 
-        [ngModel]="selectedTarget()" 
-        (ngModelChange)="selectedTarget.set($event)">
-        <option *ngFor="let target of allowedTargets()" [value]="target">
-          {{ target.toUpperCase() }}
-        </option>
-      </select>
     </div>
-    <span class="engine-badge" *ngIf="engineName()">Motor: {{ engineName() }}</span>
-  </div>
 
-  <!-- INDICADOR DE LECTURA WHITELIST -->
-  <div class="loading-whitelist" *ngIf="isLoadingTargets()">
-    <span class="spinner-sm"></span> Consultando formatos permitidos...
-  </div>
+    <!-- Paso 2: Selección de Formato -->
+    <div class="form-group">
+      <label class="step-label">2. Selecciona el formato de salida:</label>
+      
+      <div class="select-wrapper">
+        <select
+          id="formatSelect"
+          class="custom-select"
+          [ngModel]="selectedTarget()"
+          (ngModelChange)="selectedTarget.set($event)"
+          [disabled]="!selectedFile() || isConverting() || isLoadingTargets()"
+        >
+          @if (!selectedFile()) {
+            <option value="" disabled selected>--- Primero selecciona un documento ---</option>
+          } @else if (isLoadingTargets()) {
+            <option value="" disabled selected>Cargando formatos disponibles...</option>
+          } @else {
+            <option value="" disabled selected>--- Selecciona un formato ---</option>
+            @for (target of allowedTargets(); track target) {
+              <option [value]="target">{{ target.toUpperCase() }}</option>
+            }
+          }
+        </select>
+      </div>
+    </div>
 
-  <!-- BANNER DE ERRORES O ÉXITO -->
-  <div class="alert alert-danger" *ngIf="errorMessage()">
-    ⚠ {{ errorMessage() }}
-  </div>
+    <!-- Mensajes de Estado -->
+    @if (errorMessage()) {
+      <div class="alert alert-error">⚠️ {{ errorMessage() }}</div>
+    }
+    @if (successMessage()) {
+      <div class="alert alert-success">✅ {{ successMessage() }}</div>
+    }
 
-  <div class="alert alert-success" *ngIf="successMessage()">
-    ✔ {{ successMessage() }}
-  </div>
-
-  <!-- BOTÓN PROCESAR -->
-  <div class="action-container">
-    <button 
+    <!-- Botón Principal -->
+    <button
       type="button"
-      class="btn-convert" 
+      class="btn-action"
       [disabled]="!selectedFile() || !selectedTarget() || isConverting() || isLoadingTargets()"
-      (click)="executeConversion()">
-      <span *ngIf="!isConverting()">CONVERTIR DOCUMENTO</span>
-      <span *ngIf="isConverting()" class="spinner-text">
-        <span class="spinner-sm"></span> PROCESANDO...
-      </span>
+      (click)="executeConversion()"
+    >
+      @if (isConverting()) {
+        <span class="spinner"></span>
+        <span>Procesando y convirtiendo...</span>
+      } @else {
+        <span>Convertir Documento</span>
+      }
     </button>
   </div>
-
 </div>
