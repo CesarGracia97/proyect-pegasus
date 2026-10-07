@@ -1,5 +1,9 @@
 import sys
+import os
 import asyncio
+
+# Forzar a Python a reconocer el directorio raíz en el path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 # Configuración para Windows (ProactorEventLoop)
 if sys.platform == "win32":
@@ -7,10 +11,13 @@ if sys.platform == "win32":
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.endpoints import router as api_router
+
+# Importación correcta desde app/api/documents.py y app/api/data.py
+from app.api.documents import router as documents_router
+from app.api.data import router as data_router
 
 app = FastAPI(
-    title="Pegasus Document Converter API",
+    title="Pegasus Documents & Data Converter API",
     version="2.0.0",
     docs_url="/docs"
 )
@@ -24,11 +31,18 @@ app.add_middleware(
     expose_headers=["Content-Disposition"]
 )
 
-app.include_router(api_router, prefix="/documents")
+# 1. Router para Conversión de Documentos (/documents)
+app.include_router(documents_router, prefix="/documents")
+
+# 2. Router para Conversión de Datos (/data)
+app.include_router(data_router)
 
 @app.get("/")
 async def root():
-    return {"status": "online", "service": "Pegasus Document Converter API"}
+    return {
+        "status": "online",
+        "service": "Pegasus Documents & Data Converter API"
+    }
 
 if __name__ == "__main__":
     import uvicorn
