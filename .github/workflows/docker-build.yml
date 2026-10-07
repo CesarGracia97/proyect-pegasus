@@ -23,6 +23,12 @@ jobs:
           npm ci
           npm run build -- --configuration production
 
+      - name: Compilar Backend Audio/Video nativamente
+        run: |
+          cd audio-video
+          npm ci
+          npm run build
+
       - name: Configurar QEMU (Soporte ARM64)
         uses: docker/setup-qemu-action@v3
 
@@ -35,6 +41,7 @@ jobs:
           username: cesargracia97
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      # --- CONSTRUCCIÓN Y PUBLICACIÓN DE IMÁGENES DOCKER ---
       - name: Compilar y publicar Backend Audio/Video (Multi-arch)
         uses: docker/build-push-action@v6
         with:
@@ -49,13 +56,15 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Compilar y publicar API Convertidora de Documentos (Multi-arch)
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./documents
           file: ./documents/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: cesargracia97/ps-doc-backend:v1
+          tags: |
+            cesargracia97/ps-doc-backend:v1
+            cesargracia97/ps-doc-backend:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
