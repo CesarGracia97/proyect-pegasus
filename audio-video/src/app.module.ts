@@ -7,10 +7,12 @@ import { VideoModule } from './video/video.module';
 import { CommonModule } from './common/common.module';
 import { YoutubeService } from './youtube/youtube.service';
 import { YoutubeModule } from './youtube/youtube.module';
+import { ImageService } from './image/image.service';
+import { ImageModule } from './image/image.module';
 
 @Module({
-  imports: [AudioModule, VideoModule, YoutubeModule, CommonModule],
+  imports: [AudioModule, VideoModule, YoutubeModule, CommonModule, ImageModule],
   controllers: [AppController],
-  providers: [AppService, VideoService, YoutubeService],
+  providers: [AppService, VideoService, YoutubeService, ImageService],
 })
 export class AppModule {}
