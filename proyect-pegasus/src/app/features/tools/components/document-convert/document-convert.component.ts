@@ -5,6 +5,7 @@ import { DocumentConvertService } from '../../services/document-convert.service'
 
 @Component({
   selector: 'app-document-convert',
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './document-convert.component.html',
   styleUrl: './document-convert.component.scss'
@@ -61,12 +62,11 @@ export class DocumentConvertComponent {
 
     this.isLoadingTargets.set(true);
 
-    // Consulta de la Whitelist en el Backend
+    // Consulta de formatos permitidos en Backend
     this.docService.getAllowedConversions(ext).subscribe({
       next: (response) => {
         this.isLoadingTargets.set(false);
         
-        // Normalización para garantizar que siempre sea un string[]
         const targets: string[] = Array.isArray(response.allowed_targets)
           ? response.allowed_targets
           : [response.allowed_targets];

@@ -11,20 +11,22 @@ interface VideoFormatOption {
 
 @Component({
   selector: 'app-video-convert',
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './video-convert.component.html',
   styleUrl: './video-convert.component.scss'
 })
-export class VideoConvertComponent {selectedFiles: File[] = [];
+export class VideoConvertComponent {
+  selectedFiles: File[] = [];
   isLoading = false;
   errorMessage: string | null = null;
   successMessage = false;
   readonly maxFiles = 10;
 
-  selectedSourceFormat: string = '';
+  detectedSourceFormat: string = '';
   targetFormat: VideoTargetFormat = 'mp4';
 
-  readonly sourceFormats: VideoFormatOption[] = [
+  readonly allowedFormats: VideoFormatOption[] = [
     { label: 'MP4 (.mp4)', extension: '.mp4', mime: 'video/mp4' },
     { label: 'MOV (.mov)', extension: '.mov', mime: 'video/quicktime' },
     { label: 'WEBM (.webm)', extension: '.webm', mime: 'video/webm' },
@@ -40,28 +42,28 @@ export class VideoConvertComponent {selectedFiles: File[] = [];
 
   constructor(private vc_ser: VideoConverterService) {}
 
-  onSourceFormatChange(): void {
-    this.selectedFiles = [];
-    this.errorMessage = null;
-    this.successMessage = false;
+  get currentAccept(): string {
+    return this.allowedFormats.map((f) => `${f.extension},${f.mime}`).join(',');
   }
 
-  get currentAccept(): string {
-    if (!this.selectedSourceFormat) return '';
-    const current = this.sourceFormats.find((f) => f.extension === this.selectedSourceFormat);
-    return current ? `${current.extension},${current.mime}` : '';
+  get summaryText(): string {
+    if (this.selectedFiles.length === 0) return '';
+    if (this.selectedFiles.length === 1) {
+      return `${this.selectedFiles[0].name} (${this.formatFileSize(this.selectedFiles[0].size)} MB)`;
+    }
+    return `${this.selectedFiles.length} videos en formato ${this.detectedSourceFormat.replace('.', '').toUpperCase()}`;
   }
 
   triggerFileInput(fileInput: HTMLInputElement): void {
-    if (!this.selectedSourceFormat || this.isLoading) return;
+    if (this.isLoading) return;
     fileInput.click();
   }
 
   onFileSelected(event: Event): void {
-    if (!this.selectedSourceFormat) return;
     const input = event.target as HTMLInputElement;
-    if (input.files) {
+    if (input.files && input.files.length > 0) {
       this.processFiles(Array.from(input.files));
+      input.value = '';
     }
   }
 
@@ -73,9 +75,9 @@ export class VideoConvertComponent {selectedFiles: File[] = [];
   onDrop(event: DragEvent): void {
     event.preventDefault();
     event.stopPropagation();
-    if (!this.selectedSourceFormat || this.isLoading) return;
+    if (this.isLoading) return;
 
-    if (event.dataTransfer?.files) {
+    if (event.dataTransfer?.files && event.dataTransfer.files.length > 0) {
       this.processFiles(Array.from(event.dataTransfer.files));
     }
   }
@@ -83,39 +85,69 @@ export class VideoConvertComponent {selectedFiles: File[] = [];
   private processFiles(files: File[]): void {
     this.errorMessage = null;
     this.successMessage = false;
-    const targetExt = this.selectedSourceFormat.toLowerCase();
 
-    const validFiles = files.filter((file) =>
-      file.name.toLowerCase().endsWith(targetExt)
-    );
+    // 1. Filtro por whitelist de extensiones permitidas
+    const validFiles = files.filter((file) => {
+      const ext = '.' + file.name.split('.').pop()?.toLowerCase();
+      return this.allowedFormats.some((f) => f.extension === ext);
+    });
 
-    if (validFiles.length === 0 || validFiles.length !== files.length) {
-      this.errorMessage = `Por favor, selecciona únicamente archivos con extensión ${targetExt.toUpperCase()}`;
+    if (validFiles.length === 0) {
+      this.errorMessage = 'Por favor, selecciona únicamente archivos de video válidos (.mp4, .mov, .webm, .avi, .mkv)';
       return;
     }
 
-    const totalFiles = [...this.selectedFiles, ...validFiles];
+    // 2. Determinar la extensión homogénea del lote
+    const currentExt = this.selectedFiles.length > 0 
+      ? this.detectedSourceFormat 
+      : '.' + validFiles[0].name.split('.').pop()?.toLowerCase();
 
-    if (totalFiles.length > this.maxFiles) {
+    const homogeneousFiles = validFiles.filter(f => '.' + f.name.split('.').pop()?.toLowerCase() === currentExt);
+
+    if (homogeneousFiles.length !== validFiles.length) {
+      this.errorMessage = `Solo se agregaron los videos con extensión ${currentExt.toUpperCase()} para mantener la homogeneidad del lote.`;
+    }
+
+    if (homogeneousFiles.length === 0) return;
+
+    this.detectedSourceFormat = currentExt;
+
+    // 3. Control de duplicados mediante Map (llave única: nombre_tamaño)
+    const fileMap = new Map<string, File>();
+
+    // Cargar archivos previamente guardados del mismo formato
+    this.selectedFiles
+      .filter(f => '.' + f.name.split('.').pop()?.toLowerCase() === currentExt)
+      .forEach(f => fileMap.set(`${f.name}_${f.size}`, f));
+
+    // Insertar/Reemplazar archivos nuevos
+    homogeneousFiles.forEach(f => fileMap.set(`${f.name}_${f.size}`, f));
+
+    const uniqueFiles = Array.from(fileMap.values());
+
+    // 4. Validar límite máximo de archivos
+    if (uniqueFiles.length > this.maxFiles) {
       this.errorMessage = `Solo puedes subir un máximo de ${this.maxFiles} archivos por lote.`;
-      this.selectedFiles = totalFiles.slice(0, this.maxFiles);
+      this.selectedFiles = uniqueFiles.slice(0, this.maxFiles);
     } else {
-      this.selectedFiles = totalFiles;
+      this.selectedFiles = uniqueFiles;
     }
   }
 
-  removeFile(index: number): void {
-    this.selectedFiles.splice(index, 1);
-    this.errorMessage = null;
+  clearFiles(event?: Event): void {
+    if (event) event.stopPropagation();
+    this.resetState();
   }
 
-  clearFiles(): void {
+  resetState(): void {
     this.selectedFiles = [];
+    this.detectedSourceFormat = '';
     this.errorMessage = null;
+    this.successMessage = false;
   }
 
   convertFiles(): void {
-    if (this.selectedFiles.length === 0 || !this.selectedSourceFormat) return;
+    if (this.selectedFiles.length === 0 || !this.detectedSourceFormat) return;
 
     this.isLoading = true;
     this.errorMessage = null;
@@ -135,7 +167,7 @@ export class VideoConvertComponent {selectedFiles: File[] = [];
 
         this.isLoading = false;
         this.successMessage = true;
-        this.selectedFiles = [];
+        this.resetState();
       },
       error: (err) => {
         console.error(err);

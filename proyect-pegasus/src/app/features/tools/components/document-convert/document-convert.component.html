@@ -1,70 +1,75 @@
 <div class="converter-card">
-  <!-- Cabecera Superior Ancho Completo -->
+  <!-- Cabecera estilo Convertidor de Datos -->
   <div class="card-header">
-    <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <svg class="icon-header" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
       <polyline points="14 2 14 8 20 8"></polyline>
       <line x1="16" y1="13" x2="8" y2="13"></line>
       <line x1="16" y1="17" x2="8" y2="17"></line>
       <polyline points="10 9 9 9 8 9"></polyline>
     </svg>
-    <h2 class="header-title">Convertidor de Documentos</h2>
+    <h2>Convertidor de Documentos</h2>
   </div>
 
-  <div class="form-body">
-    <!-- Paso 1: Carga de Archivo -->
-    <div class="form-group">
-      <label class="step-label">1. Selecciona o arrastra el documento:</label>
-      
+  <!-- Paso 1: Carga o Arrastre de Archivo -->
+  <div class="format-selector-group">
+    <label class="selector-label">1. Selecciona o arrastra el documento:</label>
+
+    @if (!selectedFile()) {
       <div
-        class="input-file-bar"
-        [class.has-file]="selectedFile()"
+        class="dropzone"
         [class.drag-over]="isDragOver()"
-        [class.disabled]="isConverting() || isLoadingTargets()"
-        (click)="fileInput.click()"
         (dragover)="onDragOver($event)"
         (dragleave)="onDragLeave($event)"
         (drop)="onDrop($event)"
+        (click)="fileInput.click()"
       >
+        <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17 8 12 3 7 8"></polyline>
+          <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
+        <p>Haz clic o arrastra un archivo (.docx, .pdf, .txt, .md, .html...)</p>
         <input
           #fileInput
           type="file"
-          [disabled]="isConverting() || isLoadingTargets()"
+          class="hidden-file-input"
           (change)="onFileSelected($event)"
-          class="hidden-input"
         />
-
-        <div class="input-content">
-          @if (selectedFile()) {
-            <span class="file-name">📄 {{ selectedFile()?.name }}</span>
-            <button type="button" class="btn-remove" (click)="$event.stopPropagation(); resetState()" title="Quitar archivo">
-              ✕
-            </button>
-          } @else {
-            <span class="placeholder-text">Haz clic o arrastra tu archivo aquí (.docx, .pdf, .txt...)</span>
-          }
-        </div>
       </div>
-    </div>
+    } @else {
+      <div class="file-selected-badge">
+        <span class="file-name">📄 {{ selectedFile()?.name }}</span>
+        <button
+          type="button"
+          class="btn-remove-file"
+          (click)="resetState()"
+          [disabled]="isConverting() || isLoadingTargets()"
+          title="Quitar archivo"
+        >
+          ✕
+        </button>
+      </div>
+    }
+  </div>
 
-    <!-- Paso 2: Selección de Formato -->
-    <div class="form-group">
-      <label class="step-label">2. Selecciona el formato de salida:</label>
-      
+  <!-- Paso 2: Aparece SOLO cuando se selecciona un archivo -->
+  @if (selectedFile()) {
+    <div class="format-selector-group">
+      <label for="docTargetSelect" class="selector-label">2. Selecciona el formato de salida:</label>
       <div class="select-wrapper">
         <select
-          id="formatSelect"
-          class="custom-select"
+          id="docTargetSelect"
+          class="format-select"
           [ngModel]="selectedTarget()"
           (ngModelChange)="selectedTarget.set($event)"
-          [disabled]="!selectedFile() || isConverting() || isLoadingTargets()"
+          [disabled]="isConverting() || isLoadingTargets() || allowedTargets().length === 0"
         >
-          @if (!selectedFile()) {
-            <option value="" disabled selected>--- Primero selecciona un documento ---</option>
-          } @else if (isLoadingTargets()) {
+          @if (isLoadingTargets()) {
             <option value="" disabled selected>Cargando formatos disponibles...</option>
+          } @else if (allowedTargets().length === 0) {
+            <option value="" disabled selected>--- No hay formatos disponibles ---</option>
           } @else {
-            <option value="" disabled selected>--- Selecciona un formato ---</option>
             @for (target of allowedTargets(); track target) {
               <option [value]="target">{{ target.toUpperCase() }}</option>
             }
@@ -72,28 +77,32 @@
         </select>
       </div>
     </div>
+  }
 
-    <!-- Mensajes de Estado -->
-    @if (errorMessage()) {
-      <div class="alert alert-error">⚠️ {{ errorMessage() }}</div>
-    }
-    @if (successMessage()) {
-      <div class="alert alert-success">✅ {{ successMessage() }}</div>
-    }
+  <!-- Mensajes de Estado -->
+  @if (errorMessage()) {
+    <div class="alert alert-error">
+      <span>⚠️ {{ errorMessage() }}</span>
+    </div>
+  }
 
-    <!-- Botón Principal -->
-    <button
-      type="button"
-      class="btn-action"
-      [disabled]="!selectedFile() || !selectedTarget() || isConverting() || isLoadingTargets()"
-      (click)="executeConversion()"
-    >
-      @if (isConverting()) {
-        <span class="spinner"></span>
-        <span>Procesando y convirtiendo...</span>
-      } @else {
-        <span>Convertir Documento</span>
-      }
-    </button>
-  </div>
+  @if (successMessage()) {
+    <div class="alert alert-success">
+      <span>✅ {{ successMessage() }}</span>
+    </div>
+  }
+
+  <!-- Botón de Ejecución -->
+  <button
+    type="button"
+    class="btn-submit"
+    [disabled]="!selectedFile() || !selectedTarget() || isConverting() || isLoadingTargets()"
+    (click)="executeConversion()"
+  >
+    @if (isConverting()) {
+      <span>Procesando y convirtiendo...</span>
+    } @else {
+      <span>Convertir y Descargar</span>
+    }
+  </button>
 </div>

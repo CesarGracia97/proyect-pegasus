@@ -15,6 +15,8 @@ import { AudioConvertComponent } from './components/audio-convert/audio-convert.
 import { VideoConvertComponent } from './components/video-convert/video-convert.component';
 import { YtConvertComponent } from './components/yt-convert/yt-convert.component';
 import { DocumentConvertComponent } from './components/document-convert/document-convert.component';
+import { DataConvertComponent } from './components/data-convert/data-convert.component';
+import { ImageConvertComponent } from './components/image-convert/image-convert.component';
 export type ActiveTool = 'audio' | 'video' | 'images' | 'youtube' | 'documents' | 'data' | null;
 
 @Component({
@@ -26,7 +28,9 @@ export type ActiveTool = 'audio' | 'video' | 'images' | 'youtube' | 'documents' 
     AudioConvertComponent,
     VideoConvertComponent,
     YtConvertComponent, 
-    DocumentConvertComponent
+    DocumentConvertComponent, 
+    DataConvertComponent,
+    ImageConvertComponent
   ],
   templateUrl: './tools.component.html',
   styleUrls: ['./tools.component.scss']

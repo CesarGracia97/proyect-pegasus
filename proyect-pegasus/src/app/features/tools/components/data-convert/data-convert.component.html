@@ -1,1 +1,101 @@
-<p>data-convert works!</p>
+<div class="converter-card">
+  <div class="card-header">
+    <svg class="icon-header" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+      <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+      <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+    </svg>
+    <h2>Convertidor de Datos</h2>
+  </div>
+
+  <!-- Paso 1: Carga o Arrastre de Archivo -->
+  <div class="format-selector-group">
+    <label class="selector-label">1. Selecciona o arrastra tu archivo de datos:</label>
+
+    @if (!selectedFile()) {
+      <div
+        class="dropzone"
+        [class.drag-over]="isDragOver()"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)"
+        (click)="fileInput.click()"
+      >
+        <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17 8 12 3 7 8"></polyline>
+          <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
+        <p>Haz clic o arrastra un archivo (.csv, .xlsx, .xls, .json, .sql)</p>
+        <input
+          #fileInput
+          type="file"
+          class="hidden-file-input"
+          [accept]="supportedExtensions.join(',')"
+          (change)="onFileSelected($event)"
+        />
+      </div>
+    } @else {
+      <div class="file-selected-badge">
+        <span class="file-name">📄 {{ selectedFile()?.name }}</span>
+        <button type="button" class="btn-remove-file" (click)="resetSelection()" [disabled]="isLoading()">✕</button>
+      </div>
+    }
+  </div>
+
+  <!-- Paso 2: Selección de Formato de Destino -->
+  @if (selectedFile()) {
+    <div class="format-selector-group">
+      <label for="dataTargetSelect" class="selector-label">2. Selecciona el formato de destino:</label>
+      <div class="select-wrapper">
+        <select
+          id="dataTargetSelect"
+          class="format-select"
+          [ngModel]="selectedTargetFormat()"
+          (ngModelChange)="selectedTargetFormat.set($event)"
+          [disabled]="isLoading() || allowedFormats().length === 0"
+        >
+          @if (allowedFormats().length === 0) {
+            <option value="" disabled selected>--- No hay formatos disponibles ---</option>
+          } @else {
+            @for (fmt of allowedFormats(); track fmt) {
+              <option [value]="fmt">{{ fmt | uppercase }}</option>
+            }
+          }
+        </select>
+      </div>
+    </div>
+  }
+
+  <!-- Mensaje de Error -->
+  @if (errorMessage()) {
+    <div class="alert alert-error">
+      <span>⚠️ {{ errorMessage() }}</span>
+    </div>
+  }
+
+  <!-- Botón de Ejecución -->
+  <button
+    type="button"
+    class="btn-submit"
+    [disabled]="!selectedFile() || !selectedTargetFormat() || isLoading()"
+    (click)="executeConversion()"
+  >
+    @if (isLoading()) {
+      <span>Procesando datos...</span>
+    } @else {
+      <span>Convertir y Descargar</span>
+    }
+  </button>
+
+  <!-- Animación de Carga Cyberpunk -->
+  @if (isLoading()) {
+    <div class="loading-animation-container">
+      <div class="gif-stack">
+        <img src="assets/img/animations/loading_gifs/loading.gif" alt="Cargando fondo" class="bg-loading-gif" />
+        <img src="assets/img/animations/loading_gifs/x_run.gif" alt="Megaman X corriendo" class="fg-x-run-gif" />
+      </div>
+      <span class="loading-label">Estructurando datos y procesando archivo...</span>
+    </div>
+  }
+</div>
