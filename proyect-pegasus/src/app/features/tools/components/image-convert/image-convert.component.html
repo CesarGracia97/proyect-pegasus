@@ -1,0 +1,123 @@
+<div class="converter-card">
+  <!-- Cabecera Estándar -->
+  <div class="card-header">
+    <svg class="icon-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+      <circle cx="8.5" cy="8.5" r="1.5"/>
+      <polyline points="21 15 16 10 5 21"/>
+    </svg>
+    <h2>Convertidor de Imágenes</h2>
+  </div>
+
+  <!-- Paso 1: Carga de Archivos (Dropzone con estado integrado) -->
+  <div class="format-selector-group">
+    <label class="selector-label">1. Selecciona o arrastra los archivos de imagen:</label>
+
+    <div
+      class="dropzone"
+      [class.disabled]="isConverting()"
+      [class.has-files]="selectedFiles().length > 0"
+      (dragover)="onDragOver($event)"
+      (drop)="onDrop($event)"
+      (click)="triggerFileInput(fileInput)"
+    >
+      <input
+        #fileInput
+        type="file"
+        multiple
+        [accept]="currentAccept"
+        [disabled]="isConverting()"
+        (change)="onFileSelected($event)"
+        class="hidden-input"
+      />
+
+      @if (selectedFiles().length === 0) {
+        <div class="dropzone-content">
+          <div class="upload-icon-wrapper">
+            <svg class="icon-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+          </div>
+          <p class="dropzone-text">Haga clic o arrastre sus archivos de imagen aquí</p>
+          <p class="dropzone-subtext">
+            Soporta: <strong>.png, .jpg, .webp, .heic, .svg, .bmp, .tiff</strong> (Máx. {{ maxFiles }})
+          </p>
+        </div>
+      } @else {
+        <div class="dropzone-content loaded-state">
+          <div class="loaded-info">
+            <span class="media-badge-icon">🖼️</span>
+            <div class="loaded-text-group">
+              <span class="file-summary-title">
+                {{ selectedFiles().length }}/{{ maxFiles }} imagen(es) cargada(s)
+              </span>
+              <span class="file-summary-name" [title]="summaryText()">
+                {{ summaryText() }}
+              </span>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="btn-clear-inline"
+            (click)="clearFiles($event)"
+            [disabled]="isConverting()"
+            title="Cambiar archivos"
+          >
+            ✕ Cambiar
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Paso 2: Despliegue Dinámico de Formato de Destino -->
+  @if (selectedFiles().length > 0) {
+    <div class="format-selector-group">
+      <label class="selector-label">2. Selecciona el formato de destino:</label>
+      <select
+        class="format-select"
+        [ngModel]="selectedTarget()"
+        (ngModelChange)="selectedTarget.set($event)"
+        [disabled]="isLoadingTargets() || isConverting()"
+      >
+        @if (isLoadingTargets()) {
+          <option value="" disabled selected>Cargando formatos permitidos...</option>
+        } @else {
+          @for (target of allowedTargets(); track target) {
+            <option [value]="target">{{ target.toUpperCase() }}</option>
+          }
+        }
+      </select>
+    </div>
+  }
+
+  <!-- Mensajes de Alerta -->
+  @if (errorMessage()) {
+    <div class="alert alert-error">
+      <span>⚠️ {{ errorMessage() }}</span>
+    </div>
+  }
+
+  @if (successMessage()) {
+    <div class="alert alert-success">
+      <span>✅ {{ successMessage() }}</span>
+    </div>
+  }
+
+  <!-- Botón de Ejecución -->
+  <button
+    type="button"
+    class="btn-submit"
+    [disabled]="selectedFiles().length === 0 || !selectedTarget() || isLoadingTargets() || isConverting()"
+    (click)="executeConversion()"
+  >
+    @if (isConverting()) {
+      <span class="spinner"></span>
+      <span>Procesando y convirtiendo imágenes...</span>
+    } @else {
+      <span>Convertir Imagen y Descargar (.ZIP)</span>
+    }
+  </button>
+</div>
